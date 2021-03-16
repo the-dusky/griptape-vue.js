@@ -1,0 +1,14 @@
+*.log
+.cache
+.DS_Store
+src/.temp
+node_modules
+dist
+
+.env
+
+.vscode/
+vetur.config.js
+jsconfig.json
+
+metals.*

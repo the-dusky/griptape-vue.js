@@ -1,0 +1,14 @@
+{
+  "name": "@stakeordie/griptape-vue.js",
+  "version": "0.0.1",
+  "description": "griptape.js but Vue.js flavored",
+  "main": "src/main.js",
+  "repository": "https://github.com/stakeordie/griptape-vue.js.git",
+  "author": "Luis Espinoza <luis@stakeordie.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@stakeordie/griptape.js": "^0.1.2",
+    "vue": "^3.0.5",
+    "vuex": "^4.0.0"
+  }
+}
