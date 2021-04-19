@@ -8,7 +8,7 @@
   "license": "MIT",
   "dependencies": {
     "@stakeordie/griptape.js": "^0.1.4",
-    "vue": "^2.6.12",
+    "vue": "^3.0.11",
     "vuex": "^3.6.0"
   }
 }

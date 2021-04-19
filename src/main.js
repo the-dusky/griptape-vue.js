@@ -6,6 +6,7 @@ import VkeysWallet from './components/wallet/VkeysWallet';
 
 import Keplr from './plugins/keplr';
 import VKeys from './plugins/vkeys';
+import StatePersist from './plugins/state-persist';
 
 
 export {
@@ -16,6 +17,6 @@ export {
     VkeysWallet as VkeysWallet,
 
     Keplr as Keplr,
-    VKeys as VKeys
-
+    VKeys as VKeys,
+    StatePersist as StatePersist,
 }
