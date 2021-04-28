@@ -2,7 +2,7 @@
   <div class="keplr">
       <div class="keplr__status" :class="{ 'keplr__status--online': address }"></div>
       <a href="" @click="clicked()">
-        <img class="keplr__icon" src="@/assets/keplr-icon.svg" :class="{ 'keplr--off': keplrIsOff }">
+        <img class="keplr__icon" src="../../assets/keplr-icon.svg" :class="{ 'keplr--off': keplrIsOff }">
       </a>
 
       <secret-overlay :show="showDetails"></secret-overlay>

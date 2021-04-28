@@ -1,6 +1,4 @@
-import { Keplr } from '@stakeordie/griptape.js';
-
-import Vuex from 'vuex';
+import { Keplr, TestnetChain } from '@stakeordie/griptape.js';
 
 export default {
   install(Vue, options) {
@@ -10,9 +8,9 @@ export default {
       return str ? str.substring(0, half) + '...' + str.substring(str.length - half, str.length) : '';
     });
 
-    Vue.use(Vuex);
     Vue.prototype.$store.registerModule('$keplr', {
       namespaced: true,
+
       state: {
         chainInfo: {
           chainId: '',
@@ -21,11 +19,13 @@ export default {
         selectedAccount: null,
         accounts: []
       },
+
       mutations: {
         setChainInfo: (state, { chainId, chainName }) => {
           state.chainInfo.chainId = chainId;
           state.chainInfo.chainName = chainName;
         },
+
         selectAccount: (state, address) => {
           state.accounts.forEach(e => { e.selected = false });
 
@@ -52,10 +52,12 @@ export default {
           }
         }
       },
+
       actions: {
         setChainInfo: ({ commit }, chainInfo) => {
           commit('setChainInfo', chainInfo);
         },
+
         selectAccount: ({ commit }, address) => {
           commit('selectAccount', address);
         }
@@ -63,13 +65,13 @@ export default {
     });
 
 
+    // TODO add last parameter in constructor
     const keplrWallet = new Keplr(
       options.chainId,
       options.chainName,
       options.restUrl,
       options.rpcUrl,
-
-      options.onLoad
+      options.isExperimental
     );
 
 
@@ -82,8 +84,8 @@ export default {
     // 2. Updates the address everything the default address is changed in the wallet
     keplrWallet.onAddressChanged = (newAddress) => {
       Vue.prototype.$store.dispatch('$keplr/selectAccount', newAddress);
-    },
+    };
 
-      Object.defineProperty(Vue.prototype, '$keplr', { value: keplrWallet });
+    Object.defineProperty(Vue.prototype, '$keplr', { value: keplrWallet });
   },
 };

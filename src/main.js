@@ -8,15 +8,24 @@ import Keplr from './plugins/keplr';
 import VKeys from './plugins/vkeys';
 import StatePersist from './plugins/state-persist';
 
+import Vue from 'vue';
+import Vuex from 'vuex';
+
+Vue.use(Vuex);
+
+// We create the default store for all plugins
+Vue.prototype.$store = new Vuex.Store({
+  plugins: [StatePersist.plugin],
+});
 
 export {
-    KeplrAccount as KeplrAccount,
-    KeplrUser as KeplrUser,
+  // Keplr components and plugins
+  Keplr,
+  KeplrAccount,
+  KeplrUser,
 
-    VkeysAddress as VkeysAddress,
-    VkeysWallet as VkeysWallet,
-
-    Keplr as Keplr,
-    VKeys as VKeys,
-    StatePersist as StatePersist,
+  // Viewing keys components and plugins
+  VKeys,
+  VkeysAddress,
+  VkeysWallet
 }
