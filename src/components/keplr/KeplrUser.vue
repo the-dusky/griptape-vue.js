@@ -1,19 +1,19 @@
 <template>
   <div class="keplr">
       <div class="keplr__status" :class="{ 'keplr__status--online': address }"></div>
-      <a href="" @click="clicked()">
+
+      <a @click="clicked">
         <img class="keplr__icon" src="../../assets/keplr-icon.svg" :class="{ 'keplr--off': keplrIsOff }">
       </a>
 
-      <secret-overlay :show="showDetails"></secret-overlay>
 
-      <transition 
+      <transition
         enter-active-class="animate__animated animate__flipInX"
         leave-active-class="animate__animated animate__flipOutX">
 
         <div v-show="showDetails" class="modal user-modal">
           <h3>Keplr account</h3>
-          <a class="close" @click="showDetails = false" href="">Close</a>
+          <a class="close" @click="showDetails = false">Close</a>
           <div v-show="address">
             <!-- this.$keplr.chainId is not reactive but there's no need, it's left here as an example -->
             <dl>
@@ -27,31 +27,24 @@
 </template>
 
 <script>
-const AUTO_CLOSE_TIME = 3000;
-
 import SecretOverlay from './SecretOverlay.vue';
 
 export default {
   components: { SecretOverlay },
-  props: {
-    value: {
-      type: String,
-      default: null,
-    },
-  },
+
   data () {
     return {
-        showDetails: false,
-        keplrIsOff: false,
+      showDetails: false,
+      keplrIsOff: false,
     }
   },
+
   computed: {
     address() {
-      this.$emit("input", this.$store.state.$keplr.selectedAccount?.address);
-      //console.log("KeplrUser",this.$store.state.$keplr.selectedAccount?.address);
       return this.$store.state.$keplr.selectedAccount?.address;
     },
   },
+
   methods: {
     async clicked() {
       if(!this.address) {
@@ -99,7 +92,7 @@ export default {
     }
 
   }
-  
+
   .user-modal {
     width: 400px;
     h3 {

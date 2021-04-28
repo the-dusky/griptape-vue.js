@@ -18,6 +18,8 @@ Vue.prototype.$store = new Vuex.Store({
   plugins: [StatePersist.plugin],
 });
 
+StatePersist.start();
+
 export {
   // Keplr components and plugins
   Keplr,
