@@ -1,5 +1,4 @@
 import { SecretJsClient } from '@stakeordie/griptape.js';
-import Vuex from 'vuex';
 
 function aRandomStringForEntropy(length) {
   var result = '';
@@ -15,7 +14,6 @@ export default {
   install(Vue, options) {
     const secretJsClient = new SecretJsClient(options.restUrl, options.wallet);
 
-    Vue.use(Vuex);
     Vue.prototype.$store.registerModule('$vkeys', {
       namespaced: true,
       state: {

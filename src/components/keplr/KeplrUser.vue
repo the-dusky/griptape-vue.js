@@ -2,10 +2,11 @@
   <div class="keplr">
       <div class="keplr__status" :class="{ 'keplr__status--online': address }"></div>
 
+      <secret-overlay :show="showDetails"></secret-overlay>
+
       <a @click="clicked">
         <img class="keplr__icon" src="../../assets/keplr-icon.svg" :class="{ 'keplr--off': keplrIsOff }">
       </a>
-
 
       <transition
         enter-active-class="animate__animated animate__flipInX"
@@ -65,8 +66,8 @@ export default {
 <style lang="scss" scoped>
 .keplr {
   position: relative;
-  align-items: center;
   display: flex;
+  align-items: center;
 
   &__icon {
     width: 32px;
@@ -85,16 +86,16 @@ export default {
     position: absolute;
     top: -2px;
     right: -4px;
-    background-color: var(--default-error-color);
+    background-color: var(--color-negative, red);
 
     &--online {
-      background-color: var(--default-success-color, green);
+      background-color: var(--color-positive, green);
     }
-
   }
 
   .user-modal {
     width: 400px;
+
     h3 {
       color: var(--color-purple-secondary);
     }
@@ -110,10 +111,12 @@ export default {
 
   .account {
     display: block;
+
     &__chain {
       text-transform: uppercase;
       font-size: 0.75em;
     }
+
     &__address {
       font-weight: bold;
     }

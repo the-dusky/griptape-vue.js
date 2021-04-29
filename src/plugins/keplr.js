@@ -29,6 +29,10 @@ export default {
         selectAccount: (state, address) => {
           state.accounts.forEach(e => { e.selected = false });
 
+          if (!address) {
+            state.selectedAccount = null;
+          }
+
           if (address) {
             let account = state.accounts.find(e => e.address == address);
 
@@ -83,6 +87,7 @@ export default {
     });
     // 2. Updates the address everything the default address is changed in the wallet
     keplrWallet.onAddressChanged = (newAddress) => {
+      console.log(newAddress);
       Vue.prototype.$store.dispatch('$keplr/selectAccount', newAddress);
     };
 

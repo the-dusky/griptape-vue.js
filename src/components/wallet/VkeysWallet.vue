@@ -5,6 +5,8 @@
       <img class="wallet-icon" :class="{ enabled: savedViewingKey != null }" src="../../assets/key-icon.png" alt="key icon">
     </a>
 
+    <secret-overlay :show="modalVisible"></secret-overlay>
+
     <transition
       enter-active-class="animate__animated animate__flipInX"
       leave-active-class="animate__animated animate__flipOutX">
@@ -32,31 +34,31 @@ import VkeysAddress from './VkeysAddress.vue';
 
 export default {
   components: { VkeysAddress, SecretOverlay },
+
   props: {
-    value: {
-      type: String,
-      default: null,
-    },
-    account: {
-      type: String,
-      default: null
-    },
     contract: {
       type: String,
-      default: null
+      required: false,
+      default: 'secret1lqdx8va86f9cff5dsz28l97x20z67qv7d4npj8'
     },
   },
+
   data() {
     return {
       modalVisible: false
     }
   },
+
   computed: {
     savedViewingKey() {
       const savedViewingKey = this.$vkeys.get(this.account, this.contract);
       this.$emit("input", savedViewingKey?.key);
       return savedViewingKey;
-    }
+    },
+
+    account() {
+      return this.$store.state.$keplr.selectedAccount?.address;
+    },
   },
 }
 </script>
