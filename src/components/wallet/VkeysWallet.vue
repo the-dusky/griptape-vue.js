@@ -2,46 +2,39 @@
   <!-- TODO: #81 Notify user if viewing key exists, but it isn't working (another one has been created elsewhere) @the-dusky -->
   <div class="vkeys-wallet">
     <a href="" @click.prevent="modalVisible = !modalVisible">
-      <img class="wallet-icon" :class="{ enabled: savedViewingKey != null }" src="../../assets/key-icon.png" alt="key icon">
+      <img class="wallet-icon" :class="{ enabled: savedViewingKey != null }" :immediate="true" src="../../assets/key-icon.png">
     </a>
 
     <secret-overlay :show="modalVisible"></secret-overlay>
 
-    <transition
+    <transition 
       enter-active-class="animate__animated animate__flipInX"
       leave-active-class="animate__animated animate__flipOutX">
 
-    <div class="modal wallet-modal" v-show="modalVisible">
-      <h3>Viewing keys</h3>
-      <dl>
-        <dt>Factory address</dt>
-        <dd>{{ contract | abbrv }}</dd>
-      </dl>
-      <vkeys-address :account="account" :contract="contract">
-        <template #description>
-          <small>Creating a viewing key for the factory contract will allow you to see the auctions you have participated in as a buyer and seller.</small>
-        </template>
-      </vkeys-address>
-      <a class="close" @click.prevent="modalVisible = false" href="">Close</a>
-    </div>
+      <div class="modal wallet-modal" v-show="modalVisible">
+        <h3>Viewing keys</h3>
+        <dl>
+          <dt>Factory address</dt>
+          <dd>{{ contract | abbrv }}</dd>
+        </dl>
+        <vkeys-address :account="account">
+          <template #description>
+            <small>Creating a viewing key for the factory contract will allow you to see the auctions you have participated in as a buyer and seller.</small>
+          </template>
+        </vkeys-address>
+        <a class="close" @click.prevent="modalVisible = false" href="">Close</a>
+      </div>
+
     </transition>
   </div>
 </template>
 
 <script>
 import SecretOverlay from '../keplr/SecretOverlay';
-import VkeysAddress from './VkeysAddress.vue';
+import VkeysAddress from './VkeysAddress';
 
 export default {
   components: { VkeysAddress, SecretOverlay },
-
-  props: {
-    contract: {
-      type: String,
-      required: false,
-      default: 'secret1lqdx8va86f9cff5dsz28l97x20z67qv7d4npj8'
-    },
-  },
 
   data() {
     return {
@@ -59,6 +52,10 @@ export default {
     account() {
       return this.$store.state.$keplr.selectedAccount?.address;
     },
+
+    contract() {
+      return this.$store.state.$contracts?.currentAddress;
+    }
   },
 }
 </script>
@@ -81,7 +78,7 @@ export default {
   width: 400px;
   h3 {
     color: var(--color-blue-primary);
-  }
+    }
 
   dt {
     color: var(--color-purple-secondary);

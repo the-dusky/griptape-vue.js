@@ -87,7 +87,6 @@ export default {
     });
     // 2. Updates the address everything the default address is changed in the wallet
     keplrWallet.onAddressChanged = (newAddress) => {
-      console.log(newAddress);
       Vue.prototype.$store.dispatch('$keplr/selectAccount', newAddress);
     };
 

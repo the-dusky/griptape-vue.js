@@ -1,15 +1,14 @@
+import Vue from 'vue';
+import Vuex from 'vuex';
+
 import KeplrAccount from './components/keplr/KeplrAccount';
 import KeplrUser from './components/keplr/KeplrUser';
 
-import VkeysAddress from './components/wallet/VkeysAddress';
 import VkeysWallet from './components/wallet/VkeysWallet';
 
-import Keplr from './plugins/keplr';
-import VKeys from './plugins/vkeys';
 import StatePersist from './plugins/state-persist';
 
-import Vue from 'vue';
-import Vuex from 'vuex';
+import Griptape from './plugins/griptape';
 
 // Importing default components styles
 import './sass/styles.scss';
@@ -21,8 +20,6 @@ Vue.prototype.$store = new Vuex.Store({
   plugins: [StatePersist.plugin],
 });
 
-StatePersist.start();
-
 // Registering global filters
 Vue.filter("abbrv", (str, abbrv) => {
   if (!str) return '';
@@ -31,13 +28,12 @@ Vue.filter("abbrv", (str, abbrv) => {
 });
 
 export {
-  // Keplr components and plugins
-  Keplr,
+  // Keplr
   KeplrAccount,
   KeplrUser,
 
-  // Viewing keys components and plugins
-  VKeys,
-  VkeysAddress,
-  VkeysWallet
+  // Viewing keys
+  VkeysWallet,
+
+  Griptape
 }

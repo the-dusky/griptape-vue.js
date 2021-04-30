@@ -3,6 +3,7 @@
     <div v-if="!account">
       <p>Please log in using your<br>Keplr wallet</p>
     </div>
+
     <div v-if="account">
       <div class="no-key" v-if="!savedViewingKey && !viewingKey">
         <div class="vkey-error" v-if="isInError && !isInProgress">
@@ -15,7 +16,7 @@
           <slot name="description">
           <small>A viewing key allows to interact with the private state of the contract.</small>
           </slot>
-          <button class="no-button" @click.prevent="createViewingKey()">&#x1F511; Create viewing key</button>
+          <button class="no-button" @click.prevent="createViewingKey">&#x1F511; Create viewing key</button>
           <button class="no-button" @click.prevent="isViewingKeyVisible = true; viewingKey = { key: '' }">&#x1F511; Enter key</button>
         </div>
       </div>
@@ -51,23 +52,13 @@
 
 <script>
 import LoadingIcon from './LoadingIcon.vue';
+
 export default {
   components: { LoadingIcon },
   props: {
-    contract: {
-      type: String,
-      default: null,
-    },
-    account: {
-      type: String,
-      default: null,
-    },
-    value: {
-      type: Object,
-      default: null,
-    },
     hidden: {
       type: Boolean,
+      required: false,
       default: false,
     }
   },
@@ -92,6 +83,14 @@ export default {
         this.viewingKey = Object.assign(savedKey);
       }
       return savedKey;
+    },
+
+    account() {
+      return this.$store.state.$keplr.selectedAccount?.address;
+    },
+
+    contract() {
+      return this.$store.state.$contracts?.currentAddress;
     }
   },
   methods: {
