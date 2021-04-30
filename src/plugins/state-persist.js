@@ -1,17 +1,13 @@
-const storageKey = "sAuction";
+const storageKey = '__app';
 
 const statePersist = {
   store: null,
   hasStarted: false,
   loadFromStorage: (storageKey) => {
-    if (process.isClient) {
       return JSON.parse(localStorage.getItem(storageKey));
-    }
   },
   saveToStorage: (storageKey, obj) => {
-    if (process.isClient) {
       localStorage.setItem(storageKey, JSON.stringify(obj));
-    }
   },
 
   plugin: (store) => {
@@ -35,9 +31,6 @@ const statePersist = {
 
       // Individual entities have to be restored so reactivity is not
       // messed up
-      statePersist.store.state.$auctions.auctions = storedState.$auctions.auctions;
-      statePersist.store.state.$auctions.auctionsFilter = storedState.$auctions.auctionsFilter;
-      statePersist.store.state.$auctions.tokenData = storedState.$auctions.tokenData;
       statePersist.store.state.$vkeys.vkeys = storedState.$vkeys.vkeys;
     }
     statePersist.hasStarted = true;
