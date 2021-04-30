@@ -147,7 +147,7 @@ export default {
 }
 .vkey {
   &__key {
-    margin-bottom: var(--f-gutter-s);
+    margin-bottom: 1em;
   }
   &__saved-key {
     padding-top: 6px;
@@ -157,9 +157,14 @@ export default {
   &__tools {
     display: flex;
     flex-flow: row wrap;
+    align-items: center;
     justify-content: space-evenly;
-    row-gap: var(--f-gutter-s);
-    column-gap: var(--f-gutter-l);
+    row-gap: 10px;
+    column-gap: 25px;
+
+    dt{
+      font-size: 0.75em;
+    }
 
     dl {
       margin-right: auto;
@@ -167,6 +172,12 @@ export default {
 
     textarea {
       width: 100%;
+      border-style: solid;
+      outline: none;
+      border-radius: 0.3em;
+      font-size: 14px;
+      border-color: #999;
+      border-width: 1px;
     }
 
     a {
@@ -192,7 +203,9 @@ small {
   display: block;
   font-size: 13px;
   line-height: 1.5em;
-  margin-bottom: var(--f-gutter);
+  text-align: justify;
+  margin-bottom: 0.5em;
+
 }
 
 </style>
