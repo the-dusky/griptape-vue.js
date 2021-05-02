@@ -13,7 +13,7 @@ yarn add griptape-vue.js
 2. Import Griptape plugin and configure it in you main.js
 
 ```js
-import Griptape from '@stakeordie/griptape-vue.js';
+import { Griptape } from '@stakeordie/griptape-vue.js';
 
 Vue.use(Griptape, {
   // Contracts that will be used in the application.
