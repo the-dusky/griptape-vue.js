@@ -13,6 +13,11 @@ import Griptape from './plugins/griptape';
 // Importing default components styles
 import './sass/styles.scss';
 
+// Define as global components
+Vue.component('KeplrAccount', KeplrAccount);
+Vue.component('KeplrUser', KeplrUser);
+Vue.component('VkeysWallet', VkeysWallet);
+
 Vue.use(Vuex);
 
 // We create the default store for all plugins
