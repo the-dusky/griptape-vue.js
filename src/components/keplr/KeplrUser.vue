@@ -5,7 +5,8 @@
       <secret-overlay :show="showDetails"></secret-overlay>
 
       <a @click="clicked">
-        <img class="keplr__icon" :src="require(`@/assets/${filename}.${fileExtension}`)" alt="" :class="{ 'keplr--off': keplrIsOff }">
+        <img 
+          class="keplr__icon" :src="require(`@/assets/${img}`)" alt="" :class="{ 'keplr--off': keplrIsOff }">
       </a>
 
       <transition
@@ -33,8 +34,7 @@ import SecretOverlay from './SecretOverlay.vue';
 export default {
   components: { SecretOverlay },
   props:{
-    filename: String,
-    fileExtension: String
+    img: String,
   },
   data () {
     return {
