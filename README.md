@@ -46,7 +46,7 @@ Vue.use(Griptape, {
 });
 ```
 
-3. Use the Keplr and Vkeys componets wherever you want.
+3. Use the Keplr and Vkeys componets wherever you want (auto imported to you Vue instance).
 
 ```vue
 <template>
@@ -58,6 +58,8 @@ Vue.use(Griptape, {
 ```
 
 4. Use mapState to call the info that is storage in your modules, and access the state values in your Vue template, as the next example.
+
+> Take a look at KeplrState and VkeysState mixins
 
 ```vue
 <template>
@@ -82,3 +84,7 @@ export default {
 };
 </script>
 ```
+
+## Developers Guide
+
+Check out developers guide [here](./DEVELOPERS.md)
