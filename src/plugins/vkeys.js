@@ -1,4 +1,5 @@
 import { SecretJsClient } from '@stakeordie/griptape.js';
+import { mapState } from 'vuex';
 
 function aRandomStringForEntropy(length) {
   var result           = '';
@@ -9,6 +10,16 @@ function aRandomStringForEntropy(length) {
   }
   return result;
 }
+
+const VkeysState = {
+  computed: {
+    ...mapState('$vkeys', ['vkeys']),
+  }
+};
+
+export {
+  VkeysState
+};
 
 export default {
   install(Vue, options) {

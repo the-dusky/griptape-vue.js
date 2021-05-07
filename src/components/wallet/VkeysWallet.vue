@@ -2,7 +2,7 @@
   <!-- TODO: #81 Notify user if viewing key exists, but it isn't working (another one has been created elsewhere) @the-dusky -->
   <div class="vkeys-wallet">
     <a href="" @click.prevent="modalVisible = !modalVisible">
-      <img class="wallet-icon" :class="{ enabled: savedViewingKey != null }" :immediate="true" src="../../assets/key-icon.png">
+      <img class="wallet-icon" :class="{ enabled: savedViewingKey != null }" :immediate="true" :src="require(`@/assets/${img}`)" alt="">
     </a>
 
     <secret-overlay :show="modalVisible"></secret-overlay>
@@ -36,6 +36,9 @@ import VkeysAddress from './VkeysAddress';
 export default {
   components: { VkeysAddress, SecretOverlay },
 
+  props: {
+    img: String,
+  },
   data() {
     return {
       modalVisible: false
