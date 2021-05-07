@@ -6,7 +6,9 @@
 
       <a @click="clicked">
         <img 
-          class="keplr__icon" :src="require(`@/assets/${img}`)" alt="" :class="{ 'keplr--off': keplrIsOff }">
+          class="keplr__icon" :src="require(`@/assets/${img}`)" alt=""
+        >
+        <img class="keplr__iconStatus" :src="require(`@/assets/${keplrIsOff ? iconOffline : iconOnline}`)" alt="">
       </a>
 
       <transition
@@ -35,6 +37,8 @@ export default {
   components: { SecretOverlay },
   props:{
     img: String,
+    iconOnline: {type: String, default: 'two-dots.svg'},
+    iconOffline: {type: String, default: 'two-dots.svg'},
   },
   data () {
     return {
@@ -62,6 +66,10 @@ export default {
     toggleDetails(value) {
       this.showDetails = value || !this.showDetails;
     },
+
+    // changeStatus(img){
+      
+    // }
   },
 }
 </script>
@@ -74,6 +82,14 @@ export default {
 
   &__icon {
     width: 32px;
+  }
+
+  &__iconStatus{
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    top: -2px;
+    right: -4px;
   }
 
   &__error {

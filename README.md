@@ -30,7 +30,7 @@ Vue.use(Griptape, {
   },
 
   // Keplr configuration. Same as before.
-  keplr: {
+  chain: {
     chainId: "holodeck-2",
     chainName: "Holodeck 2",
     restUrl: "https://bootstrap.secrettestnet.io",
@@ -46,7 +46,7 @@ Vue.use(Griptape, {
 });
 ```
 
-2. Use the Keplr and Vkeys componets wherever you want
+3. Use the Keplr and Vkeys componets wherever you want.
 
 ```vue
 <template>
@@ -55,12 +55,30 @@ Vue.use(Griptape, {
     <keplr-user></keplr-user>
   </div>
 </template>
+```
+
+4. Use mapState to call the info that is storage in your modules, and access the state values in your Vue template, as the next example.
+
+```vue
+<template>
+  <div v-for="vkey in vkeys" :key="vkey.userAddress">
+    <p>User Address: {{ vkey.userAddress }}</p>
+    <ul>
+      <li v-for="v in vkey.viewingKeys" :key="v.key">Key: {{ v.key }}</li>
+    </ul>
+  </div>
+</template>
 
 <script>
-import { KeplrUser, VkeysWallet } from "@stakeordie/griptape-vue.js";
+// Import mapState
+import { mapState } from "vuex";
 
 export default {
-  components: { KeplrUser, VkeysWallet },
+  computed: {
+    // Call to mapState
+    // As first parameteter recives the module name and second the state.
+    ...mapState("$vkeys", ["vkeys"]),
+  },
 };
 </script>
 ```
