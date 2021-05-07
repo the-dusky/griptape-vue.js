@@ -1,4 +1,15 @@
 import { Keplr, TestnetChain } from '@stakeordie/griptape.js';
+import { mapState } from 'vuex';
+
+const KeplrState = {
+  computed: {
+    ...mapState('$keplr', ['selectedAccount', 'accounts', 'chainInfo']),
+  }
+};
+
+export {
+  KeplrState
+};
 
 export default {
   install(Vue, options) {
@@ -77,7 +88,6 @@ export default {
       options.rpcUrl,
       options.isExperimental
     );
-
 
     // After initializing the wallet it hooks it up with the store in just two events
     // 1. Sets up the reactive chain info

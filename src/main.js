@@ -3,6 +3,8 @@ import Vuex from 'vuex';
 
 import KeplrAccount from './components/keplr/KeplrAccount';
 import KeplrUser from './components/keplr/KeplrUser';
+import { KeplrState } from './plugins/keplr';
+import { VkeysState } from './plugins/vkeys';
 
 import VkeysWallet from './components/wallet/VkeysWallet';
 
@@ -33,12 +35,7 @@ Vue.filter("abbrv", (str, abbrv) => {
 });
 
 export {
-  // Keplr
-  KeplrAccount,
-  KeplrUser,
-
-  // Viewing keys
-  VkeysWallet,
-
-  Griptape
+  Griptape,
+  KeplrState,
+  VkeysState
 }
