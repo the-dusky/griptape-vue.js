@@ -17,11 +17,11 @@
           <dt>Factory address</dt>
           <dd>{{ contract | abbrv }}</dd>
         </dl>
-        <vkeys-address :account="account">
+        <viewing-keys-address :account="account">
           <template #description>
             <small>Creating a viewing key for the factory contract will allow you to see the auctions you have participated in as a buyer and seller.</small>
           </template>
-        </vkeys-address>
+        </viewing-keys-address>
         <a class="close" @click.prevent="modalVisible = false" href="">Close</a>
       </div>
 
@@ -30,11 +30,11 @@
 </template>
 
 <script>
-import SecretOverlay from '../keplr/SecretOverlay';
-import VkeysAddress from './VkeysAddress';
+import SecretOverlay from '../SecretOverlay';
+import ViewingKeysAddress from './ViewingKeysAddress';
 
 export default {
-  components: { VkeysAddress, SecretOverlay },
+  components: { ViewingKeysAddress, SecretOverlay },
 
   props: {
     img: String,

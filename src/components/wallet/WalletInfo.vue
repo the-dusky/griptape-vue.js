@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import SecretOverlay from './SecretOverlay.vue';
+import SecretOverlay from '../SecretOverlay.vue';
 
 export default {
   components: { SecretOverlay },
