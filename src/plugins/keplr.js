@@ -27,7 +27,7 @@ export default {
           chainId: '',
           chainName: '',
         },
-        selectedAccount: null,
+        selectedAccount: {},
         accounts: []
       },
 

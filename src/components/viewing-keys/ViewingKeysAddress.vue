@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import LoadingIcon from './LoadingIcon.vue';
+import LoadingIcon from '../LoadingIcon.vue';
 
 export default {
   components: { LoadingIcon },

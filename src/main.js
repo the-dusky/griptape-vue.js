@@ -1,12 +1,12 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import KeplrAccount from './components/keplr/KeplrAccount';
-import KeplrUser from './components/keplr/KeplrUser';
+import WalletAccount from './components/wallet/WalletAccount';
+import WalletInfo from './components/wallet/WalletInfo';
 import { KeplrState } from './plugins/keplr';
 import { VkeysState } from './plugins/vkeys';
 
-import VkeysWallet from './components/wallet/VkeysWallet';
+import ViewingKeysSelector from './components/viewing-keys/ViewingKeysSelector';
 
 import StatePersist from './plugins/state-persist';
 
@@ -16,9 +16,9 @@ import Griptape from './plugins/griptape';
 import './sass/styles.scss';
 
 // Define as global components
-Vue.component('KeplrAccount', KeplrAccount);
-Vue.component('KeplrUser', KeplrUser);
-Vue.component('VkeysWallet', VkeysWallet);
+Vue.component('WalletAccount', WalletAccount);
+Vue.component('WalletInfo', WalletInfo);
+Vue.component('ViewingKeysSelector', ViewingKeysSelector);
 
 Vue.use(Vuex);
 
