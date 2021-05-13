@@ -6,9 +6,9 @@ import StatePersist from './state-persist';
 export default {
   install(Vue, options) {
     Vue.use(Contracts, options.contracts);
-    Vue.use(Keplr, options.keplr);
+    Vue.use(Keplr, options.chain);
     Vue.use(VKeys, {
-      ...options.vkeys,
+      restUrl: options.chain.restUrl,
       wallet: Vue.prototype.$keplr
     });
 
