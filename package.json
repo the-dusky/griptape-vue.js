@@ -1,6 +1,6 @@
 {
   "name": "@stakeordie/griptape-vue.js",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "griptape.js but Vue.js flavored",
   "main": "src/main.js",
   "repository": "https://github.com/stakeordie/griptape-vue.js.git",
