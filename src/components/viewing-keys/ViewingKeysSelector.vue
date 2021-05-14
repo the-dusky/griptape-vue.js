@@ -37,7 +37,7 @@ export default {
   components: { ViewingKeysAddress, SecretOverlay },
 
   props: {
-    img: String,
+    img: {type: String, default:'key-icon.png'},
   },
   data() {
     return {

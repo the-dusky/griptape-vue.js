@@ -36,9 +36,9 @@ import SecretOverlay from '../SecretOverlay.vue';
 export default {
   components: { SecretOverlay },
   props:{
-    img: String,
-    iconOnline: {type: String, default: 'two-dots.svg'},
-    iconOffline: {type: String, default: 'two-dots.svg'},
+    img: {type: String, default: 'keplr-icon.svg'},
+    iconOnline: {type: String, default: 'green-circle.svg'},
+    iconOffline: {type: String, default: 'red-circle.svg'},
   },
   data () {
     return {
@@ -50,7 +50,7 @@ export default {
   computed: {
     address() {
       return this.$store.state.$keplr.selectedAccount?.address;
-    },
+    }
   },
 
   methods: {
@@ -66,10 +66,6 @@ export default {
     toggleDetails(value) {
       this.showDetails = value || !this.showDetails;
     },
-
-    // changeStatus(img){
-      
-    // }
   },
 }
 </script>
