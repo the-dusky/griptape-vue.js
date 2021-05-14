@@ -5,7 +5,7 @@
       <img class="wallet-icon" :class="{ enabled: savedViewingKey != null }" :immediate="true" :src="require(`@/assets/${img}`)" alt="">
     </a>
 
-    <secret-overlay :show="modalVisible"></secret-overlay>
+    <overlay :show="modalVisible"></overlay>
 
     <transition 
       enter-active-class="animate__animated animate__flipInX"
@@ -30,14 +30,14 @@
 </template>
 
 <script>
-import SecretOverlay from '../SecretOverlay';
+import Overlay from '../Overlay';
 import ViewingKeysAddress from './ViewingKeysAddress';
 
 export default {
-  components: { ViewingKeysAddress, SecretOverlay },
+  components: { ViewingKeysAddress, Overlay },
 
   props: {
-    img: String,
+    img: {type: String, default:'key-icon.png'},
   },
   data() {
     return {
