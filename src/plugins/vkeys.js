@@ -11,14 +11,14 @@ function aRandomStringForEntropy(length) {
   return result;
 }
 
-const VkeysState = {
+const ViewingKeysState = {
   computed: {
     ...mapState('$vkeys', ['vkeys']),
   }
 };
 
 export {
-  VkeysState
+  ViewingKeysState
 };
 
 export default {

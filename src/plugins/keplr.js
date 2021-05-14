@@ -1,14 +1,14 @@
 import { Keplr, TestnetChain } from '@stakeordie/griptape.js';
 import { mapState } from 'vuex';
 
-const KeplrState = {
+const WalletState = {
   computed: {
     ...mapState('$keplr', ['selectedAccount', 'accounts', 'chainInfo']),
   }
 };
 
 export {
-  KeplrState
+  WalletState
 };
 
 export default {
