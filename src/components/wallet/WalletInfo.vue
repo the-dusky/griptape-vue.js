@@ -1,60 +1,78 @@
 <template>
   <div class="keplr">
-      <div class="keplr__status" :class="{ 'keplr__status--online': address }"></div>
 
-      <secret-overlay :show="showDetails"></secret-overlay>
+    <a href="#" @click.prevent="enableWallet">
+      <img v-if="!imgSrc" class="keplr__wallet-icon" src="../../assets/keplr-icon.svg" alt="wallet icon">
+      <img v-else class="keplr__wallet-icon" :src="imgSrc" alt="wallet icon">
+    </a>
 
-      <a @click="clicked">
-        <img 
-          class="keplr__icon" :src="require(`@/assets/${img}`)" alt=""
-        >
-        <img class="keplr__iconStatus" :src="require(`@/assets/${keplrIsOff ? iconOffline : iconOnline}`)" alt="">
-      </a>
+    <div class="keplr__status" :class="statusClasses">
+      <img v-if="!onlineIcon" src="../../assets/online-icon.svg" alt="online icon">
+      <img v-if="!offlineIcon" src="../../assets/offline-icon.svg" alt="offline icon">
+    </div>
 
-      <transition
-        enter-active-class="animate__animated animate__flipInX"
-        leave-active-class="animate__animated animate__flipOutX">
+    <overlay :show="showDetails"></overlay>
 
-        <div v-show="showDetails" class="modal user-modal">
-          <h3>Keplr account</h3>
-          <a class="close" @click="showDetails = false">Close</a>
-          <div v-show="address">
-            <!-- this.$keplr.chainId is not reactive but there's no need, it's left here as an example -->
-            <dl>
-              <dt>{{ $keplr.chainId }}</dt>
-              <dd>{{ address | bech32 }}</dd>
-            </dl>
-          </div>
-        </div>
-    </transition>
+    <div v-show="showDetails" class="modal">
+      <div class="modal__content">
+
+        <h3>Keplr account</h3>
+
+        <a href="#" @click.prevent="toggleDetails(false)">Close</a>
+
+        <dl v-show="address">
+          <dt>{{ chainId }}</dt>
+          <dd>{{ address | bech32 }}</dd>
+        </dl>
+
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import SecretOverlay from '../SecretOverlay.vue';
+import Overlay from '../Overlay.vue';
 
 export default {
-  components: { SecretOverlay },
+  components: { Overlay },
+
   props:{
-    img: {type: String, default: 'keplr-icon.svg'},
-    iconOnline: {type: String, default: 'green-circle.svg'},
-    iconOffline: {type: String, default: 'red-circle.svg'},
+    imgSrc: {
+      type: String
+    },
+    onlineIcon: {
+      type: String
+    },
+    offlineIcon: {
+      type: String
+    }
   },
+
   data () {
     return {
-      showDetails: false,
-      keplrIsOff: false,
+      showDetails: false
     }
   },
 
   computed: {
     address() {
       return this.$store.state.$keplr.selectedAccount?.address;
+    },
+
+    chainId() {
+      return this.$store.state.$keplr.chainInfo.chainId;
+    },
+
+    statusClasses() {
+      return {
+        'keplr__status--online': this.address,
+        'keplr__status--offline': !this.address
+      }
     }
   },
 
   methods: {
-    async clicked() {
+    async enableWallet() {
       if(!this.address) {
         this.$keplr.enable();
         this.toggleDetails(true);
@@ -65,76 +83,72 @@ export default {
 
     toggleDetails(value) {
       this.showDetails = value || !this.showDetails;
-    },
+    }
   },
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .keplr {
+  --wallet-icon-width: 32px;
+  --wallet-status-icon-width: 8px;
+
   position: relative;
-  display: flex;
-  align-items: center;
+  width: var(--wallet-icon-width);
 
-  &__icon {
-    width: 32px;
-  }
-
-  &__iconStatus{
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    top: -2px;
-    right: -4px;
-  }
-
-  &__error {
-    display: block;
-    min-width: max-content;
-    color: var(--default-error-color);
+  &__wallet-icon {
+    width: var(--wallet-icon-width);
   }
 
   &__status {
-    width: 12px;
-    height: 12px;
-    border-radius: 6px;
     position: absolute;
-    top: -2px;
-    right: -4px;
-    background-color: var(--color-negative, red);
+    width: var(--wallet-status-icon-width);
+    height: var(--wallet-status-icon-width);
+    top: calc(var(--wallet-status-icon-width) / -4);
+    right: calc(var(--wallet-status-icon-width) / -4);
+
+    img {
+      display: none;
+    }
 
     &--online {
-      background-color: var(--color-positive, green);
+      img[src*=online]  { display: block; }
+    }
+
+    &--offline {
+      img[src*=offline] { display: block; }
     }
   }
+}
 
-  .user-modal {
-    width: 400px;
+// TODO move modal styles to another component
+.modal {
+  position: absolute;
+  top: 0;
+  left: 0;
 
-    h3 {
-      color: var(--color-purple-secondary);
+  z-index: var(--z-index-02);
+
+  background-color: white;
+  width: 400px;
+  border: 1px solid black;
+
+  &__content {
+    // TODO we need to remove these styles from here.
+    // These are particularly for the content of the
+    // current component.
+
+    display: grid;
+    padding: var(--gutter);
+
+    h3 { grid-area: header  }
+    dl { grid-area: content }
+    a  {
+      grid-area: close;
+      justify-self: end;
     }
 
-    dt {
-      color: var(--color-blue-primary);
-    }
-
-    dd {
-      margin-bottom: 0;
-    }
-  }
-
-  .account {
-    display: block;
-
-    &__chain {
-      text-transform: uppercase;
-      font-size: 0.75em;
-    }
-
-    &__address {
-      font-weight: bold;
-    }
+    grid-template-areas: "header close" "content content";
   }
 }
 </style>
