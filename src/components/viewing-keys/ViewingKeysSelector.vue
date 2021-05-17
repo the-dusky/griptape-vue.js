@@ -1,31 +1,29 @@
 <template>
   <!-- TODO: #81 Notify user if viewing key exists, but it isn't working (another one has been created elsewhere) @the-dusky -->
-  <div class="vkeys-wallet">
-    <a href="" @click.prevent="modalVisible = !modalVisible">
-      <img class="wallet-icon" :class="{ enabled: savedViewingKey != null }" :immediate="true" :src="require(`@/assets/${img}`)" alt="">
+  <div class="vkeys">
+
+    <a href="#" @click.prevent="showModal = !showModal">
+      <img v-if="!imgSrc" class="vkeys__wallet-icon" :class="{ enabled: savedViewingKey != null }" src="../../assets/key-icon.png" alt="key icon">
+      <img v-else class="vkeys__wallet-icon" :class="{ enabled: savedViewingKey != null }" :src="srcImg" alt="key icon">
     </a>
 
-    <overlay :show="modalVisible"></overlay>
+    <overlay :show="showModal"></overlay>
 
-    <transition 
-      enter-active-class="animate__animated animate__flipInX"
-      leave-active-class="animate__animated animate__flipOutX">
+    <div class="modal" v-show="showModal" :class="alignClasses">
+      <div class="modal__content">
 
-      <div class="modal wallet-modal" v-show="modalVisible">
         <h3>Viewing keys</h3>
+
         <dl>
           <dt>Factory address</dt>
           <dd>{{ contract | abbrv }}</dd>
         </dl>
-        <viewing-keys-address :account="account">
-          <template #description>
-            <small>Creating a viewing key for the factory contract will allow you to see the auctions you have participated in as a buyer and seller.</small>
-          </template>
-        </viewing-keys-address>
-        <a class="close" @click.prevent="modalVisible = false" href="">Close</a>
-      </div>
 
-    </transition>
+        <viewing-keys-address class="address" :account="account"></viewing-keys-address>
+
+        <a href="" @click.prevent="showModal = false">Close</a>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -37,11 +35,18 @@ export default {
   components: { ViewingKeysAddress, Overlay },
 
   props: {
-    img: {type: String, default:'key-icon.png'},
+    imgSrc: {
+      type: String
+    },
+    align: {
+      type: String,
+      default: 'left'
+    }
   },
+
   data() {
     return {
-      modalVisible: false
+      showModal: false
     }
   },
 
@@ -53,39 +58,76 @@ export default {
     },
 
     account() {
-      return this.$store.state.$keplr.selectedAccount?.address;
+      return this.$store.state.$vkeys.selectedAccount?.address;
     },
 
     contract() {
       return this.$store.state.$contracts?.currentAddress;
+    },
+
+    alignClasses() {
+      return {
+        'modal--right': this.align === 'right',
+        'modal--left': this.align === 'left'
+      }
     }
-  },
+  }
 }
 </script>
 
-<style lang="scss">
-.vkeys-wallet {
+<style lang="scss" scoped>
+.vkeys {
+  --vkeys-width: 32px;
+
   position: relative;
-}
+  width: var(--vkeys-width);
 
-.wallet-icon {
-  width: 32px;
-  height: auto;
+  &__wallet-icon {
+    width: var(--vkeys-width);
+    height: auto;
 
-  &:not(.enabled) {
-    opacity: 0.5;
+    &:not(.enabled) {
+      opacity: 0.5;
+    }
   }
 }
 
-.wallet-modal {
+// TODO move modal styles to another component
+.modal {
+  position: absolute;
+  top: 0;
+
+  z-index: var(--z-index-02);
+
+  background-color: white;
   width: 400px;
-  h3 {
-    color: var(--color-blue-primary);
+  border: 1px solid black;
+
+  &--right {
+    right: 0;
+  }
+
+  &--left {
+    left: 0;
+  }
+
+  &__content {
+    // TODO we need to remove these styles from here.
+    // These are particularly for the content of the
+    // current component.
+
+    display: grid;
+    padding: var(--gutter);
+
+    h3 { grid-area: header  }
+    dl { grid-area: content }
+    .address { grid-area: address }
+    a  {
+      grid-area: close;
+      justify-self: end;
     }
 
-  dt {
-    color: var(--color-purple-secondary);
+    grid-template-areas: "header close" "address address" "content content";
   }
 }
-
 </style>

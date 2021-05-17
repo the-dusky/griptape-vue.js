@@ -10,7 +10,7 @@
           <p>Error creating your viewing key. Do you have enough SCRT?</p>
         </div>
         <loading-icon v-if="isInProgress">
-          <p>Creating viewing key</p>
+          <p>Creating viewing key...</p>
         </loading-icon>
         <div v-if="!isInProgress">
           <slot name="description">
@@ -190,22 +190,19 @@ export default {
         color: var(--color-turquoise-secondary);
       }
       &.save {
-        color: var(--color-positive);
+        color: green;
       }
       &.remove, &.forget {
-        color: var(--color-negative);
+        color: red;
       }
     }
   }
 }
 small {
-  color: white;
   display: block;
   font-size: 13px;
   line-height: 1.5em;
   text-align: justify;
   margin-bottom: 0.5em;
-
 }
-
 </style>

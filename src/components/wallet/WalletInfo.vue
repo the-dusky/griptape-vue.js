@@ -13,7 +13,7 @@
 
     <overlay :show="showDetails"></overlay>
 
-    <div v-show="showDetails" class="modal">
+    <div class="modal" v-show="showDetails">
       <div class="modal__content">
 
         <h3>Keplr account</h3>
@@ -88,7 +88,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .keplr {
   --wallet-icon-width: 32px;
   --wallet-status-icon-width: 8px;
@@ -125,7 +125,6 @@ export default {
 .modal {
   position: absolute;
   top: 0;
-  left: 0;
 
   z-index: var(--z-index-02);
 
