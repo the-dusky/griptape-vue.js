@@ -16,7 +16,7 @@
     <div class="modal" v-show="showDetails">
       <div class="modal__content">
 
-        <h3>Keplr account</h3>
+        <h3>Wallet: Keplr</h3>
 
         <a href="#" @click.prevent="toggleDetails(false)">Close</a>
 
