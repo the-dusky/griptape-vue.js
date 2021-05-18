@@ -21,7 +21,7 @@
     p {
       font-weight: 600;
       font-size: 0.9em;
-      color: var(--color-turquoise-secondary);
+      color: black;
     }
 }
 
@@ -39,14 +39,14 @@
   width: 60px;
   height: 60px;
   margin: 14px 7px;
-  border: 7px solid #fff;
+  border: 7px solid black;
   border-radius: 50%;
   animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-  border-color: #fff transparent transparent transparent;
+  border-color: white transparent transparent transparent;
 }
 .lds-ring div:nth-child(1) {
   animation-delay: -0.45s;
-  border: 8px solid var(--color-turquoise-secondary);
+  border: 8px solid black;
 }
 .lds-ring div:nth-child(2) {
   animation-delay: -0.3s;
