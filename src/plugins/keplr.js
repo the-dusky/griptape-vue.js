@@ -1,23 +1,13 @@
-import { Keplr, TestnetChain } from '@stakeordie/griptape.js';
-import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
+
+import { Keplr } from '@stakeordie/griptape.js';
 
 const WalletState = {
-  computed: {
-    ...mapState('$keplr', ['selectedAccount', 'accounts', 'chainInfo']),
-  }
+  ...mapGetters('$keplr', ['wallet']),
 };
 
-export {
-  WalletState
-};
-
-export default {
+const Plugin = {
   install(Vue, options) {
-
-    Vue.filter('bech32', (str, abbrv) => {
-      const half = (abbrv / 2) || 8;
-      return str ? str.substring(0, half) + '...' + str.substring(str.length - half, str.length) : '';
-    });
 
     Vue.prototype.$store.registerModule('$keplr', {
       namespaced: true,
@@ -27,8 +17,16 @@ export default {
           chainId: '',
           chainName: '',
         },
-        selectedAccount: {},
+
+        address: '',
+
         accounts: []
+      },
+
+      getters: {
+        wallet: (state) => {
+          return state;
+        }
       },
 
       mutations: {
@@ -38,33 +36,26 @@ export default {
         },
 
         selectAccount: (state, address) => {
-          state.accounts.forEach(e => { e.selected = false });
-
           if (!address) {
-            state.selectedAccount = null;
+            return;
           }
 
-          if (address) {
-            let account = state.accounts.find(e => e.address == address);
+          state.accounts.forEach(account => account.selected = false);
 
-            // If the account is not in the state already
-            // a new empty one is pushed
-            if (account == undefined) {
-              account = {
-                selected: true,
-                address,
-                balance: null,
-                keys: {}
-              };
+          const account = state.accounts.find(account => account.address === address);
 
-              state.accounts.push(account);
-            } else {
-              // Otherwise the account is just selected
-              account.selected = true;
-            }
+          if (!account) {
+            const newAccount = {
+              address,
+              selected: true
+            };
 
-            state.selectedAccount = account;
+            state.accounts.push(newAccount);
+          } else {
+            account.selected = true;
           }
+
+          state.address = address;
         }
       },
 
@@ -79,27 +70,23 @@ export default {
       }
     });
 
-
-    // TODO add last parameter in constructor
-    const keplrWallet = new Keplr(
-      options.chainId,
-      options.chainName,
-      options.restUrl,
-      options.rpcUrl,
-      options.isExperimental
-    );
-
-    // After initializing the wallet it hooks it up with the store in just two events
-    // 1. Sets up the reactive chain info
-    Vue.prototype.$store.dispatch('$keplr/setChainInfo', {
-      chainId: keplrWallet.chainId,
-      chainName: keplrWallet.chainName
+    Vue.filter('bech32', (str, abbrv) => {
+      const half = (abbrv / 2) || 8;
+      return str ? str.substring(0, half) + '...' + str.substring(str.length - half, str.length) : '';
     });
-    // 2. Updates the address everything the default address is changed in the wallet
+
+    const { chainId, chainName, restUrl, rpcUrl, isExperimental } = options;
+    const keplrWallet = new Keplr(chainId, chainName, restUrl, rpcUrl, isExperimental);
+
+    Vue.prototype.$store.dispatch('$keplr/setChainInfo', { chainId, chainName });
+
     keplrWallet.onAddressChanged = (newAddress) => {
       Vue.prototype.$store.dispatch('$keplr/selectAccount', newAddress);
     };
 
     Object.defineProperty(Vue.prototype, '$keplr', { value: keplrWallet });
-  },
+  }
 };
+
+export default Plugin;
+export { WalletState };
