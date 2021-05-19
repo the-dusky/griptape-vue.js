@@ -22,7 +22,7 @@ const Plugin = {
     Vue.prototype.$store.registerModule('$vkeys', {
       namespaced: true,
       state: {
-        vkeys: [],
+        wallets: [],
       },
       getters: {
         viewingKeys: (state) => {
@@ -31,27 +31,27 @@ const Plugin = {
 
         listViewingKeys: (state) => {
           return (userAddress) => {
-            const result = state.vkeys.find(vkey => vkey.userAddress == userAddress);
+            const result = state.wallets.find(vkey => vkey.userAddress == userAddress);
             return result ? result.viewingKeys : null;
           }
         },
 
         getViewingKey: (state) => {
           return (userAddress, contractAddress) => {
-            const result = state.vkeys.find(vkey => vkey.userAddress == userAddress);
+            const result = state.wallets.find(vkey => vkey.userAddress == userAddress);
             return result ? result.viewingKeys.find(viewingKey => viewingKey.contractAddress == contractAddress) : null;
           }
         },
       },
       mutations: {
         updateViewingKey: (state, { userAddress, contractAddress, viewingKey }) => {
-          let userVkeys = state.vkeys.find(vkey => vkey.userAddress == userAddress);
+          let userVkeys = state.wallets.find(vkey => vkey.userAddress == userAddress);
           if(userVkeys == undefined) {
             userVkeys = {
               userAddress,
               viewingKeys: [],
             }
-            state.vkeys.push(userVkeys);
+            state.wallets.push(userVkeys);
           }
 
           let userContractViewingKey = userVkeys.viewingKeys.find(viewingKey => viewingKey.contractAddress == contractAddress);
@@ -67,7 +67,7 @@ const Plugin = {
         },
         deleteViewingKey: (state, {userAddress, contractAddress}) => {
           // First we find the objects holding user's keys
-          const vkey = state.vkeys.find(vkey => vkey.userAddress == userAddress);
+          const vkey = state.wallets.find(vkey => vkey.userAddress == userAddress);
           if(vkey) {
             const viewingKeyIndex = vkey.viewingKeys.findIndex(viewingKey => viewingKey.contractAddress == contractAddress);
             vkey.viewingKeys.splice(viewingKeyIndex, 1);
@@ -76,13 +76,13 @@ const Plugin = {
       },
       actions: {
         createViewingKey: async({state}, { userAddress, contractAddress, fees}) => {
-          let userVkeys = state.vkeys.find(vkey => vkey.userAddress == userAddress);
+          let userVkeys = state.wallets.find(vkey => vkey.userAddress == userAddress);
           if(userVkeys == undefined) {
             userVkeys = {
               userAddress,
               viewingKeys: [],
             }
-            state.vkeys.push(userVkeys);
+            state.wallets.push(userVkeys);
           }
           if(!fees) {
             fees = "120000";
