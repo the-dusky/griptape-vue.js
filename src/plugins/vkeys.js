@@ -1,5 +1,5 @@
 import { SecretJsClient } from '@stakeordie/griptape.js';
-import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 
 function aRandomStringForEntropy(length) {
   var result           = '';
@@ -12,16 +12,10 @@ function aRandomStringForEntropy(length) {
 }
 
 const ViewingKeysState = {
-  computed: {
-    ...mapState('$vkeys', ['vkeys']),
-  }
+  ...mapGetters('$vkeys', ['viewingKeys']),
 };
 
-export {
-  ViewingKeysState
-};
-
-export default {
+const Plugin = {
   install(Vue, options) {
     const secretJsClient = new SecretJsClient(options.restUrl, options.wallet);
 
@@ -31,12 +25,17 @@ export default {
         vkeys: [],
       },
       getters: {
+        viewingKeys: (state) => {
+          return state;
+        },
+
         listViewingKeys: (state) => {
           return (userAddress) => {
             const result = state.vkeys.find(vkey => vkey.userAddress == userAddress);
             return result ? result.viewingKeys : null;
           }
         },
+
         getViewingKey: (state) => {
           return (userAddress, contractAddress) => {
             const result = state.vkeys.find(vkey => vkey.userAddress == userAddress);
@@ -127,3 +126,6 @@ export default {
     Vue.prototype.$vkeys = vkeys;
   }
 }
+
+export default Plugin;
+export { ViewingKeysState };
