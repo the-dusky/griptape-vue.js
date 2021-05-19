@@ -31,7 +31,7 @@ const statePersist = {
 
       // Individual entities have to be restored so reactivity is not
       // messed up
-      statePersist.store.state.$vkeys.vkeys = storedState.$vkeys.vkeys;
+      statePersist.store.state.$vkeys.wallets = storedState.$vkeys.wallets;
     }
     statePersist.hasStarted = true;
   },

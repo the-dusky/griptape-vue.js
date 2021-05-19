@@ -86,7 +86,7 @@ export default {
     },
 
     account() {
-      return this.$store.state.$keplr.selectedAccount?.address;
+      return this.$store.state.$keplr.address;
     },
 
     contract() {
