@@ -1,6 +1,6 @@
 {
   "name": "@stakeordie/griptape-vue.js",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "license": "MIT",
   "main": "./dist/griptape-vue.js.umd.js",
   "module": "./dist/griptape-vue.js.es.js",
@@ -17,9 +17,9 @@
     "build": "vue-tsc --noEmit --skipLibCheck && vite build"
   },
   "dependencies": {
+    "@stakeordie/griptape.js": "^0.2.0",
     "vue": "^3.0.5",
-    "vuex": "^4.0.1",
-    "@stakeordie/griptape.js": "^0.2.0"
+    "vuex": "^4.0.1"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^1.2.3",
