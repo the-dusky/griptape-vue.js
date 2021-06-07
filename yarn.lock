@@ -84,10 +84,10 @@
   dependencies:
     "@cosmjs/utils" "^0.20.0"
 
-"@stakeordie/griptape.js@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@stakeordie/griptape.js/-/griptape.js-0.2.0.tgz#6a099c400f665ef73914b6b00379710ab81d3684"
-  integrity sha512-6yuV1NTP59mxtdU9dV02i2YViIyeQIK2vDPI5xezNS0kuEmi5SeV43tj9WXcrQMQpOyHxsqaF10MozEYPFKS0A==
+"@stakeordie/griptape.js@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@stakeordie/griptape.js/-/griptape.js-0.2.1.tgz#6691a7d1c510577b9b8e85202cff1d1bf1107a4c"
+  integrity sha512-YksN/ZDFWh4BSnocnWiFaDDS/0bzhB/KI8jyRJ/SdvA23SOgxKvCOdhBMu8FipLEZCCoAuLHgrX/nBWaexPfNQ==
   dependencies:
     secretjs "^0.11.0"
 
