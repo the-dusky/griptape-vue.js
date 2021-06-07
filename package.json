@@ -1,7 +1,10 @@
 {
   "name": "@stakeordie/griptape-vue.js",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "license": "MIT",
+  "files": [
+    "dist"
+  ],
   "main": "./dist/griptape-vue.js.umd.js",
   "module": "./dist/griptape-vue.js.es.js",
   "exports": {
