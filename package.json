@@ -17,11 +17,12 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@stakeordie/griptape.js": "^0.2.1",
+    "@stakeordie/griptape.js": "^0.2.3",
     "vue": "^3.0.5",
     "vuex": "^4.0.1"
   },
   "devDependencies": {
+    "@rollup/plugin-node-resolve": "^13.0.0",
     "@vitejs/plugin-vue": "^1.2.3",
     "@vue/compiler-sfc": "^3.0.5",
     "sass": "^1.34.1",
