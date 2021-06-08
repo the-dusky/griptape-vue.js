@@ -21,6 +21,8 @@ export function gripVueJsApp(app: any, conf: GriptapeConfig): Promise<void> {
       instance.setAddress(address);
       instance.setScrtClient(scrtClient);
 
+      app.config.globalProperties.$contract = instance;
+
       // Registering modules
       registerWalletStore(store, wallet, scrtClient);
       registerViewingKeyStore(store, wallet, scrtClient, instance);

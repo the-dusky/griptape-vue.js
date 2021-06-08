@@ -53,7 +53,7 @@ export default function registerWalletStore(store, wallet, scrtClient) {
 
     async updateAccount({ commit }) {
       const address = await wallet.getAddress();
-      const account = await scrtClient.getAccount(address);
+      const account = await scrtClient.signingCosmWasmClient.getAccount(address);
       const balance = account.balance[0].amount;
 
       commit('updateAccount', { address, balance });

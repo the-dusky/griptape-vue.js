@@ -105,10 +105,10 @@
     estree-walker "^1.0.1"
     picomatch "^2.2.2"
 
-"@stakeordie/griptape.js@^0.2.3":
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/@stakeordie/griptape.js/-/griptape.js-0.2.3.tgz#6d0687a8c8f8c4de920a2e8ff44b451ae37d7753"
-  integrity sha512-S0brY238hlAhBZeb9Yl41L7B5RwKBwwQk3cIhHuuvC8tFoOgqYSmFkddwe966qEWCjZvCYCf2ASPW03aMWuEgA==
+"@stakeordie/griptape.js@^0.2.4":
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/@stakeordie/griptape.js/-/griptape.js-0.2.4.tgz#87150a6ab4a37b189986df590cbd1ace5731cea1"
+  integrity sha512-Vsd2WacMSv+8alDyi0QgY40YRAgk2t3AchGBHU8rEkmCjFJEBMZ1qPA/vpK3E3eGYWe7s7ebwEI2wORi4+ZIuw==
   dependencies:
     secretjs "^0.11.0"
 
