@@ -1,38 +1,74 @@
-import { createStore } from 'vuex';
-import {
-  grip,
-  GriptapeConfig,
-  Contract
-} from '@stakeordie/griptape.js';
-import { statePersist } from './state-persist';
+import { createApp, markRaw } from 'vue'
+import { createPinia, defineStore } from 'pinia'
+import { grip, GriptapeConfig } from '@stakeordie/griptape.js'
 
-import registerWalletStore from './wallet';
-import registerViewingKeyStore from './viewing-keys';
+import WalletInfo from '../components/WalletInfo.vue'
+import ViewingKeyManager from '../components/ViewingKeyManager.vue'
+import { useWalletStore } from './wallet'
+import { useViewingKeysStore } from './viewing-keys'
+import { statePersist } from '../modules/state-persist'
+import { contractsRegistry, registry } from './contracts'
 
-export function gripVueJsApp(app: any, conf: GriptapeConfig): Promise<void> {
+const griptapeGlue = {
+  install(app: any, options: any) {
+    const { wallet, scrtClient, pinia } = options
+
+    // Register global components
+    app.component('WalletInfo', WalletInfo)
+    app.component('ViewingKeyManager', ViewingKeyManager)
+
+    // Init pinia plugins
+    pinia.use(({ store }: any) => {
+      store.wallet = markRaw(wallet)
+      store.scrtClient = markRaw(scrtClient)
+      store.contractsRegistry = markRaw(registry)
+    })
+    pinia.use(statePersist)
+    pinia.use(contractsRegistry)
+    app.use(pinia)
+  }
+}
+
+export function gripVueJsApp(
+  conf: GriptapeConfig,
+  rootComponent: any,
+  preMount: Function
+): Promise<void> {
+
   return new Promise<void>(async (resolve, reject) => {
     try {
-      const griptape = await grip(conf);
-      const { wallet, scrtClient } = griptape;
-      const store = createStore({ plugins: [statePersist] });
 
-      // Initializing contract
-      const { instance, address } = conf.contract;
-      instance.setAddress(address);
-      instance.setScrtClient(scrtClient);
+      // Create and setup the application.
+      const app = createApp(rootComponent)
+      const pinia = createPinia()
+      const options = {
+        mountId: '#app'
+      }
 
-      app.config.globalProperties.$contract = instance;
+      // Grip the application.
+      const griptape = await grip(conf)
 
-      // Registering modules
-      registerWalletStore(store, wallet, scrtClient);
-      registerViewingKeyStore(store, wallet, scrtClient, instance);
+      // Register the glue plugin.
+      app.use(griptapeGlue, { ...griptape, pinia })
 
-      app.use(store);
+      // Needed to initialize the app, but also there are some
+      // issues if all the stores are not initialize/called
+      // here.
+      const wallet = useWalletStore(pinia)
+      wallet.init()
+      useViewingKeysStore(pinia)
 
-      resolve();
+      // Pre mount the app for user specific components, plugins.
+      preMount(app, pinia, options)
+
+      // Mount the application.
+      app.mount(options.mountId)
+
+      // Resolve the promise, provide the app and pinia instances.
+      resolve({ app, pinia, options })
 
     } catch (e) {
-      reject(e);
+      reject(e)
     }
-  });
+  })
 }

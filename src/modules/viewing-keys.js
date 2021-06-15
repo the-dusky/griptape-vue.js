@@ -1,104 +1,112 @@
-import { mapGetters, mapActions } from 'vuex';
+import { defineStore } from 'pinia'
+import { assert } from '@stakeordie/griptape.js'
+import { useWalletStore } from './wallet'
 
-export const ViewingKeysState = {
-  ...mapGetters('$viewingKeys', [
-    'viewingKeys',
-    'hasViewingkeys'
-  ])
-};
-
-export const ViewingKeysActions = {
-  ...mapActions('$viewingKeys', [
-    'createViewingKey',
-    'putViewingKey',
-    'deleteViewingKey'
-  ])
-};
-
-export default function registerViewingKeysStore(
-  store, wallet, scrtClient, contract) {
-
-  const state = {
-    viewingKeys: [], // Array<ViewingKey>
-    currentViewingKey: undefined // string
-  };
-
-  const getters = {
-    viewingKeys(state) {
-      return {
-        keys: state.viewingKeys,
-        current: state.currentViewingKey
-      }
-    },
-
-    hasViewingkeys(state) {
-      return state.viewingKeys.length !== 0;
-    }
-  };
-
-  const mutations = {
-    addViewingKey(state, vk) {
-      state.viewingKeys.push(vk);
-    },
-
-    setCurrentViewingKey(state, vk) {
-      state.currentViewingKey = vk;
-    },
-
-    deleteViewingKey(state, { walletAddr, contractAddr }) {
-      const vkIndex = state.viewingKeys
-        .find(vk => vk.walletAddr === walletAddr
-                 && vk.contractAddr === contractAddr);
-      if (vkIndex !== -1) {
-        state.viewingKeys.splice(vkIndex, 1);
-      }
-    },
-
-    init(state, initState) {
-      state.viewingKeys = initState.viewingKeys;
-      state.currentViewingKey = initState.currentViewingKey;
-    }
-  };
-
-  const actions = {
-    async createViewingKey({ state, commit }) {
-      const walletAddr = await wallet.getAddress();
-      const contractAddr = contract.address;
-
-      const userHasAlreadyAKey = state.viewingKeys
-        .find(vk => vk.walletAddr === walletAddr
-                 && vk.contractAddr === contractAddr);
-
-      if (userHasAlreadyAKey) {
-        commit('setCurrentViewingKey', userHasAlreadyAKey);
-        return;
-      }
-
-      const viewingKey = await contract.createViewingKey();
-      commit('addViewingKey', { viewingKey, walletAddr, contractAddr });
-      commit('setCurrentViewingKey', viewingKey);
-    },
-
-    async putViewingKey({ commit }, viewingKey) {
-      const walletAddr = await wallet.getAddress();
-      const contractAddr = contract.address;
-      commit('addViewingKey', { viewingKey, walletAddr, contractAddr });
-      commit('setCurrentViewingKey', viewingKey);
-    },
-
-    async deleteViewingKey({ commit }) {
-      const walletAddr = await wallet.getAddress();
-      const contractAddr = contract.address;
-      commit('deleteViewingKey', { walletAddr, contractAddr });
-      commit('setCurrentViewingKey');
-    }
-  };
-
-  store.registerModule('$viewingKeys', {
-    namespaced: true,
-    state,
-    getters,
-    mutations,
-    actions
-  });
+const isEqual = (walletAddr, contractAddr) => {
+  return vk => {
+    return vk.walletAddr === walletAddr
+        && vk.contractAddr === contractAddr
+  }
 }
+
+const isContractIdEqual = (contractId) => {
+  return vk => {
+    return vk.contractId === contractId
+  }
+}
+
+const getContract = (contracts, contractId) => {
+  const contract = contracts[`contract/${contractId}`]
+  assert(contract, `Contract ${contractId} does not exist`)
+  return contract
+}
+
+export const useViewingKeysStore = defineStore({
+  id: 'viewing-keys',
+
+  enablePersist: true,
+
+  state: () => ({
+    viewingKeys: []
+  }),
+
+  getters: {
+    hasKeys(state) {
+      return state.viewingKeys.length !== 0
+    },
+  },
+
+  actions: {
+    async createViewingKey(contractId) {
+      const wallet = useWalletStore()
+      const contract = getContract(this.contractsRegistry, contractId)
+
+      const viewingKey = this.viewingKeys
+        .find(isEqual(wallet.address, contract.$state.contractAddress))
+
+      if (viewingKey) {
+        return
+      }
+
+      const keplr = this.wallet.keplr
+      const chainId = this.wallet.chainId
+
+      await keplr.suggestToken(chainId, contract.contractAddress)
+
+      let key =
+        await keplr.getSecret20ViewingKey(chainId, contract.contractAddress)
+
+      if (!key) {
+        key = await contract.createViewingKey()
+      }
+
+      this.$patch((state) => {
+        state.viewingKeys.push({
+          contractId,
+          walletAddr: wallet.address,
+          contractAddr: contract.$state.contractAddress,
+          key
+        })
+      })
+    },
+
+    addViewingKey(contractId, key) {
+      const wallet = useWalletStore()
+      const contract = getContract(this.contractsRegistry, contractId)
+
+      const viewingKey = this.viewingKeys
+        .find(isEqual(wallet.address, contract.$state.contractAddress))
+
+      if (viewingKey) {
+        return
+      }
+
+      this.$patch((state) => {
+        state.viewingKeys.push({
+          contractId,
+          walletAddr: wallet.address,
+          contractAddr: contract.$state.contractAddress,
+          key
+        })
+      })
+    },
+
+    deleteViewingKey(contractId) {
+      const wallet = useWalletStore()
+      const contract = getContract(this.contractsRegistry, contractId)
+
+      const idx = this.viewingKeys
+        .findIndex(isEqual(wallet.address, contract.$state.contractAddress))
+
+      if (idx !== -1) {
+        this.$patch((state) => {
+          state.viewingKeys.splice(idx, 1)
+        })
+      }
+    },
+
+    getViewingKey(contractId) {
+      return this.viewingKeys.find(isContractIdEqual(contractId))
+    }
+  }
+})

@@ -1,16 +1,4 @@
-import WalletInfo from './components/WalletInfo.vue';
-import { WalletState } from './modules/wallet';
-
-import ViewingKeysManager from './components/ViewingKeysManager.vue';
-import { ViewingKeysState } from './modules/viewing-keys';
-
-export * from './modules/griptape';
-
-import './styles/index.scss';
-
-export {
-  WalletInfo,
-  ViewingKeysManager,
-  WalletState,
-  ViewingKeysState
-}
+export * from './modules/griptape'
+export * from './modules/wallet'
+export * from './modules/viewing-keys'
+export * from './modules/contracts'

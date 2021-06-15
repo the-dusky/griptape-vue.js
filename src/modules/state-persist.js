@@ -1,22 +1,28 @@
-const storageKey = '__griptape-vue.js';
+// Stores the are already registered
+const stores = []
 
-export const statePersist = (store) => {
+// The key used by `localStorage.setItem`
+const storageKey = '__griptape.js'
 
-  let init = false;
+// Pinia plugin for persisting data on local storage
+export const statePersist = ({ store, options }) => {
 
-  store.subscribe((mutation, state) => {
-    if (store.hasModule('$viewingKeys')
-      && mutation.type !== '$viewingKeys/init') {
+  // Check if the store was already registered and if the store has the state
+  // persists enabled.
+  if (!stores.includes(store.$id)
+    && (typeof options.enablePersist !== 'undefined'
+      && options.enablePersist)) {
 
-      if (!init) {
-        const persistedState = JSON.parse(localStorage.getItem(storageKey));
-        if (persistedState) {
-          store.commit('$viewingKeys/init', persistedState);
-        }
-        init = true;
-      } else {
-        localStorage.setItem(storageKey, JSON.stringify(state.$viewingKeys));
-      }
+    const data = localStorage.getItem(storageKey)
+
+    if (data) {
+      store.$state = JSON.parse(data)
     }
-  });
-};
+
+    store.$subscribe((event) => {
+      localStorage.setItem(storageKey, JSON.stringify(store.$state))
+    })
+
+    stores.push(store.$id)
+  }
+}

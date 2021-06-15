@@ -3,8 +3,8 @@
 
     <!-- Enable wallet action -->
     <a href="#"
-       @click.prevent="enable"
        class="wallet__content"
+       @click.prevent="enable"
        v-if="!isWalletReady">
        Enable Keplr
     </a>
@@ -12,26 +12,32 @@
     <!-- Main content -->
     <div class="wallet__content" v-else>
       <img src="../assets/wallet.svg" alt="wallet icon">
-      <span>{{ wallet.abbrAddress }} | {{ wallet.balance }} SCRT</span>
+      <span>{{ bech32(address) }} | {{ balance }} SCRT</span>
     </div>
 
   </div>
 </template>
 
 <script>
-import Loading from './Loading.vue';
-import { WalletState, WalletActions } from '../modules/wallet';
+import { bech32 } from '@stakeordie/griptape.js'
+import { mapState, mapActions } from 'pinia'
+import { useWalletStore } from '../modules/wallet'
 
 export default {
-  components: { Loading },
-
-  // TODO improve method call namespacing
   methods: {
-    ...WalletActions
+    ...mapActions(useWalletStore, ['enable'])
+  },
+
+  methods: {
+    bech32
   },
 
   computed: {
-    ...WalletState
+    ...mapState(useWalletStore, [
+      'address',
+      'balance',
+      'isWalletReady'
+    ])
   }
 }
 </script>

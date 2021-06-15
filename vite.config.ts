@@ -14,7 +14,10 @@ export default defineConfig({
     rollupOptions: {
       // make sure to externalize deps that shouldn't be bundled
       // into your library
-      external: ['vue', '@stakeordie/griptape.js'],
+      external: [
+        'vue',
+        '@stakeordie/griptape.js'
+      ],
       output: {
         // Provide global variables to use in the UMD build
         // for externalized deps
