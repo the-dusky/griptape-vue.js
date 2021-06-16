@@ -55,7 +55,7 @@ export function gripVueJsApp(
       // issues if all the stores are not initialize/called
       // here.
       const wallet = useWalletStore(pinia)
-      wallet.init()
+      await wallet.init()
       useViewingKeysStore(pinia)
 
       // Pre mount the app for user specific components, plugins.

@@ -67,6 +67,12 @@ export const useViewingKeysStore = defineStore({
       this.$patch((state) => {
         state.viewingKeys.splice(idx, 1)
       })
+    },
+
+    getViewingKey(contractAddress) {
+      const walletStore = useWalletStore()
+      return this.viewingKeys
+        .find(isEqual(walletStore.address, contractAddress))
     }
   }
 })
