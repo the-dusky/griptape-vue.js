@@ -18,12 +18,6 @@ export const useViewingKeysStore = defineStore({
     viewingKeys: []
   }),
 
-  getters: {
-    hasKeys(state) {
-      return state.viewingKeys.length !== 0
-    },
-  },
-
   actions: {
     async createViewingKey(contractAddress) {
       const walletStore = useWalletStore()
@@ -37,23 +31,37 @@ export const useViewingKeysStore = defineStore({
         return
       }
 
-      // TODO maybe we don't want to access the wallet directly.
-      // Suggest the token to keplr.
-      await this.wallet.suggestToken(contractAddress)
+      const contract = this.contractsRegistry[contractAddress]
+      assert(contract, 'contract not found')
+      const contractSpec = contract.$state.spec
 
-      // Get the key from keplr if any.
-      let key =
-        await this.wallet.getSnip20ViewingKey(contractAddress)
+      if (contractSpec === 'snip-20') {
+        // TODO maybe we don't want to access the wallet directly.
+        // Suggest the token to keplr.
+        await this.wallet.suggestToken(contractAddress)
 
-      if (!key) {
-        const contract = this.contractsRegistry[contractAddress]
-        assert(contract, 'contract not found')
-        key = await contract.createViewingKey()
+        // Get the key from keplr if any.
+        let key = await this.wallet.getSnip20ViewingKey(contractAddress)
+
+        if (!key) {
+          const response = await contract.createViewingKey()
+          key = response.create_viewing_key.key
+        }
+
+        // Update state
+        this.$patch((state) => {
+          state.viewingKeys.push({ walletAddress, contractAddress, key })
+        })
+
+      } else {
+        const response = await contract.createViewingKey()
+        const key = response.viewing_key.key
+
+        // Update state
+        this.$patch((state) => {
+          state.viewingKeys.push({ walletAddress, contractAddress, key })
+        })
       }
-
-      this.$patch((state) => {
-        state.viewingKeys.push({ walletAddress, contractAddress, key })
-      })
     },
 
     deleteViewingKey(contractAddress) {
