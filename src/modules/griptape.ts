@@ -7,7 +7,7 @@ import ViewingKeyManager from '../components/ViewingKeyManager.vue'
 import { useWalletStore } from './wallet'
 import { useViewingKeysStore } from './viewing-keys'
 import { statePersist } from '../modules/state-persist'
-import { contractsRegistry, registry } from './contracts'
+import { contractRegistry, registry } from './contracts'
 
 const griptapeGlue = {
   install(app: any, options: any) {
@@ -24,7 +24,7 @@ const griptapeGlue = {
       store.contractsRegistry = markRaw(registry)
     })
     pinia.use(statePersist)
-    pinia.use(contractsRegistry)
+    pinia.use(contractRegistry)
     app.use(pinia)
   }
 }

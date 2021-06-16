@@ -2,23 +2,11 @@ import { defineStore } from 'pinia'
 import { assert } from '@stakeordie/griptape.js'
 import { useWalletStore } from './wallet'
 
-const isEqual = (walletAddr, contractAddr) => {
+const isEqual = (walletAddress, contractAddress) => {
   return vk => {
-    return vk.walletAddr === walletAddr
-        && vk.contractAddr === contractAddr
+    return vk.walletAddress === walletAddress
+        && vk.contractAddress === contractAddress
   }
-}
-
-const isContractIdEqual = (contractId) => {
-  return vk => {
-    return vk.contractId === contractId
-  }
-}
-
-const getContract = (contracts, contractId) => {
-  const contract = contracts[`contract/${contractId}`]
-  assert(contract, `Contract ${contractId} does not exist`)
-  return contract
 }
 
 export const useViewingKeysStore = defineStore({
@@ -37,76 +25,48 @@ export const useViewingKeysStore = defineStore({
   },
 
   actions: {
-    async createViewingKey(contractId) {
-      const wallet = useWalletStore()
-      const contract = getContract(this.contractsRegistry, contractId)
+    async createViewingKey(contractAddress) {
+      const walletStore = useWalletStore()
+      const walletAddress = walletStore.address
 
       const viewingKey = this.viewingKeys
-        .find(isEqual(wallet.address, contract.$state.contractAddress))
+        .find(isEqual(walletAddress, contractAddress))
 
+      // If you have already a viewing key, do nothing
       if (viewingKey) {
         return
       }
 
-      const keplr = this.wallet.keplr
-      const chainId = this.wallet.chainId
+      // TODO maybe we don't want to access the wallet directly.
+      // Suggest the token to keplr.
+      await this.wallet.suggestToken(contractAddress)
 
-      await keplr.suggestToken(chainId, contract.contractAddress)
-
+      // Get the key from keplr if any.
       let key =
-        await keplr.getSecret20ViewingKey(chainId, contract.contractAddress)
+        await this.wallet.getSnip20ViewingKey(contractAddress)
 
       if (!key) {
+        const contract = this.contractsRegistry[contractAddress]
+        assert(contract, 'contract not found')
         key = await contract.createViewingKey()
       }
 
       this.$patch((state) => {
-        state.viewingKeys.push({
-          contractId,
-          walletAddr: wallet.address,
-          contractAddr: contract.$state.contractAddress,
-          key
-        })
+        state.viewingKeys.push({ walletAddress, contractAddress, key })
       })
     },
 
-    addViewingKey(contractId, key) {
+    deleteViewingKey(contractAddress) {
       const wallet = useWalletStore()
-      const contract = getContract(this.contractsRegistry, contractId)
-
-      const viewingKey = this.viewingKeys
-        .find(isEqual(wallet.address, contract.$state.contractAddress))
-
-      if (viewingKey) {
-        return
-      }
-
-      this.$patch((state) => {
-        state.viewingKeys.push({
-          contractId,
-          walletAddr: wallet.address,
-          contractAddr: contract.$state.contractAddress,
-          key
-        })
-      })
-    },
-
-    deleteViewingKey(contractId) {
-      const wallet = useWalletStore()
-      const contract = getContract(this.contractsRegistry, contractId)
 
       const idx = this.viewingKeys
-        .findIndex(isEqual(wallet.address, contract.$state.contractAddress))
+        .findIndex(isEqual(wallet.address, contractAddress))
 
-      if (idx !== -1) {
-        this.$patch((state) => {
-          state.viewingKeys.splice(idx, 1)
-        })
-      }
-    },
+      if (idx === -1) return
 
-    getViewingKey(contractId) {
-      return this.viewingKeys.find(isContractIdEqual(contractId))
+      this.$patch((state) => {
+        state.viewingKeys.splice(idx, 1)
+      })
     }
   }
 })

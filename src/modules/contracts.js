@@ -45,8 +45,8 @@ export function createSnip20Contract(id, contractAddress, contractDef) {
 export const registry = {}
 
 // Pinia plugin for accesing all the contracts in the application by id.
-export const contractsRegistry = ({ store }) => {
+export const contractRegistry = ({ store }) => {
   if (store.$id.includes('contract') && !registry[store.$id]) {
-    registry[store.$id] = store
+    registry[store.$state.contractAddress] = store
   }
 }

@@ -5,12 +5,12 @@
     <a href="#"
        class="wallet__content"
        @click.prevent="enable"
-       v-if="!isWalletReady">
+       v-show="!isWalletReady">
        Enable Keplr
     </a>
 
     <!-- Main content -->
-    <div class="wallet__content" v-else>
+    <div class="wallet__content" v-show="isWalletReady">
       <img src="../assets/wallet.svg" alt="wallet icon">
       <span>{{ bech32(address) }} | {{ balance }} SCRT</span>
     </div>

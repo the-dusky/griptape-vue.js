@@ -28,7 +28,7 @@ import { useViewingKeysStore } from '../modules/viewing-keys'
 
 export default {
   props: {
-    contractId: {
+    contractAddress: {
       type: String,
       required: true
     }
@@ -45,18 +45,18 @@ export default {
 
   methods: {
     create() {
-      this.createViewingKey(this.contractId)
+      this.createViewingKey(this.contractAddress)
       this.resetForm()
     },
 
     add() {
       if (!this.form.vk) return
-      this.addViewingKey(this.contractId, this.form.vk)
+      this.addViewingKey(this.contractAddress, this.form.vk)
       this.resetForm()
     },
 
     forget() {
-      this.deleteViewingKey(this.contractId)
+      this.deleteViewingKey(this.contractAddress)
     },
 
     showForm() {
@@ -70,9 +70,7 @@ export default {
 
     ...mapActions(useViewingKeysStore, [
       'createViewingKey',
-      'addViewingKey',
-      'deleteViewingKey',
-      'getViewingKey',
+      'deleteViewingKey'
     ])
   },
 
@@ -83,7 +81,7 @@ export default {
 
     current(store) {
       const vk = store.viewingKeys
-        .find(vk => vk.contractId === this.contractId)
+        .find(vk => vk.contractAddress === this.contractAddress)
       return vk?.key
     }
   }

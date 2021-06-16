@@ -12,6 +12,7 @@ export const useWalletStore = defineStore({
   actions: {
     async init() {
       this.updateAccount()
+
       this.wallet.onKeplrChange(() => {
         this.updateAccount()
       })
