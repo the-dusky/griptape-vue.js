@@ -6,7 +6,13 @@ const path = require('path')
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue()],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, 'src')
+    }
+  },
   build: {
+    sourcemap: true,
     lib: {
       entry: path.resolve(__dirname, 'src/main.ts'),
       name: 'GriptapeVueJs'
@@ -19,11 +25,12 @@ export default defineConfig({
         '@stakeordie/griptape.js'
       ],
       output: {
+        sourcemap: true,
         // Provide global variables to use in the UMD build
         // for externalized deps
         globals: {
-          vue: 'Vue',
-          '@stakeordie/griptape.js': 'griptape_js'
+          'vue': 'Vue',
+          '@stakeordie/griptape.js': 'griptapejs'
         }
       }
     }

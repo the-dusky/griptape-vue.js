@@ -21,7 +21,7 @@
 <script>
 import { bech32 } from '@stakeordie/griptape.js'
 import { mapState, mapActions } from 'pinia'
-import { useWalletStore } from '../modules/wallet'
+import { useWalletStore } from '@/modules/wallet'
 
 export default {
   methods: {

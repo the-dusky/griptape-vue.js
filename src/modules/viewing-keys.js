@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { assert } from '@stakeordie/griptape.js'
-import { useWalletStore } from './wallet'
+import { useWalletStore } from '@/modules/wallet'
 
 const isEqual = (walletAddress, contractAddress) => {
   return vk => {
@@ -9,9 +9,10 @@ const isEqual = (walletAddress, contractAddress) => {
   }
 }
 
-export const useViewingKeysStore = defineStore({
+export const useViewingKeyStore = defineStore({
   id: 'viewing-keys',
 
+  // This enables to be peristed by the state perists layer.
   enablePersist: true,
 
   state: () => ({
@@ -78,9 +79,10 @@ export const useViewingKeysStore = defineStore({
     },
 
     getViewingKey(contractAddress) {
-      const walletStore = useWalletStore()
-      return this.viewingKeys
-        .find(isEqual(walletStore.address, contractAddress))
+      const wallet = useWalletStore()
+      const vk = this.viewingKeys
+        .find(isEqual(wallet.address, contractAddress))
+      return vk?.key
     }
   }
 })
