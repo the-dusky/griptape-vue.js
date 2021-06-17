@@ -84,11 +84,12 @@
   dependencies:
     "@cosmjs/utils" "^0.20.0"
 
-"@stakeordie/griptape.js@^0.2.7":
-  version "0.2.7"
-  resolved "https://registry.yarnpkg.com/@stakeordie/griptape.js/-/griptape.js-0.2.7.tgz#a4b6bde4756a348e400a28a359cd0384ab0b847c"
-  integrity sha512-l1BWTNPf/jUw2y7ePaF0lPTjAykA06/E1ryOTtLfmSMWCQoOWgENm5wBue9kJ/vCL1nW3QS6Fdm/xqETVxdMqg==
+"@stakeordie/griptape.js@^0.2.8":
+  version "0.2.8"
+  resolved "https://registry.yarnpkg.com/@stakeordie/griptape.js/-/griptape.js-0.2.8.tgz#32f9fb94d0ed26c6883bc10e300929e8cfd58a00"
+  integrity sha512-69Q52/G3kmtW+ZxI1vIjT1xBas4bKGykIldcEjVwuWa/1S07LLmrpHDqwAQwWp4SGE8hoRwhGs0fZnaT4RYUng==
   dependencies:
+    decimal.js "^10.2.1"
     secretjs "^0.11.0"
 
 "@types/events@*":
@@ -419,6 +420,11 @@ curve25519-js@0.0.4:
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/curve25519-js/-/curve25519-js-0.0.4.tgz#e6ad967e8cd284590d657bbfc90d8b50e49ba060"
   integrity sha512-axn2UMEnkhyDUPWOwVKBMVIzSQy2ejH2xRGy1wq81dqRwApXfIzfbE3hIX0ZRFBIihf/KDqK158DLwESu4AK1w==
+
+decimal.js@^10.2.1:
+  version "10.2.1"
+  resolved "https://registry.yarnpkg.com/decimal.js/-/decimal.js-10.2.1.tgz#238ae7b0f0c793d3e3cea410108b35a2c01426a3"
+  integrity sha512-KaL7+6Fw6i5A2XSnsbhm/6B+NuEA7TZ4vqxnd5tXz9sbKtrN9Srj8ab4vKVdK8YAqZO9P1kg45Y6YLoduPf+kw==
 
 duplexer2@~0.1.4:
   version "0.1.4"

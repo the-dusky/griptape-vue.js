@@ -18,7 +18,7 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@stakeordie/griptape.js": "^0.2.7",
+    "@stakeordie/griptape.js": "^0.2.8",
     "pinia": "^2.0.0-beta.2",
     "sass": "^1.35.1",
     "vue": "^3.0.5"
