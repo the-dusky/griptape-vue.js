@@ -12,6 +12,7 @@ const isEqual = (walletAddress, contractAddress) => {
 export const useViewingKeyStore = defineStore({
   id: 'viewing-keys',
 
+  // This enables to be peristed by the state perists layer.
   enablePersist: true,
 
   state: () => ({
@@ -78,9 +79,10 @@ export const useViewingKeyStore = defineStore({
     },
 
     getViewingKey(contractAddress) {
-      const walletStore = useWalletStore()
-      return this.viewingKeys
-        .find(isEqual(walletStore.address, contractAddress))
+      const wallet = useWalletStore()
+      const vk = this.viewingKeys
+        .find(isEqual(wallet.address, contractAddress))
+      return vk?.key
     }
   }
 })

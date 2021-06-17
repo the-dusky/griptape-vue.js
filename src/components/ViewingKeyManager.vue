@@ -73,7 +73,8 @@ export default {
 
     ...mapActions(useViewingKeyStore, [
       'createViewingKey',
-      'deleteViewingKey'
+      'deleteViewingKey',
+      'getViewingKey'
     ])
   },
 
@@ -82,10 +83,8 @@ export default {
       'viewingKeys'
     ]),
 
-    current(store) {
-      const vk = store.viewingKeys
-        .find(vk => vk.contractAddress === this.contractAddress)
-      return vk?.key
+    current() {
+      return this.getViewingKey(this.contractAddress)
     }
   }
 }
