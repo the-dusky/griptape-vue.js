@@ -50,16 +50,19 @@ export default {
     create() {
       this.createViewingKey(this.contractAddress)
       this.resetForm()
+      this.$emit('change', this.getViewingKey(this.contractAddress))
     },
 
     add() {
       if (!this.form.vk) return
       this.addViewingKey(this.contractAddress, this.form.vk)
       this.resetForm()
+      this.$emit('change', this.getViewingKey(this.contractAddress))
     },
 
     forget() {
       this.deleteViewingKey(this.contractAddress)
+      this.$emit('change', this.getViewingKey(this.contractAddress))
     },
 
     showForm() {
