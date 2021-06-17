@@ -13,7 +13,10 @@
 
     <div class="vk__content vk-form" v-else>
       <form @submit.prevent="add">
-        <input type="text" v-model="form.vk" placeholder="Type or paste viewing key">
+
+        <input type="text" v-model="form.vk"
+          placeholder="Type or paste viewing key">
+
         <button>Add</button>
         <button type="button" @click.prevent="resetForm">Cancel</button>
       </form>
@@ -24,7 +27,7 @@
 
 <script>
 import { mapState, mapActions } from 'pinia'
-import { useViewingKeysStore } from '@/modules/viewing-keys'
+import { useViewingKeyStore } from '@/modules/viewing-keys'
 
 export default {
   props: {
@@ -68,14 +71,14 @@ export default {
       this.isFormShowing = false
     },
 
-    ...mapActions(useViewingKeysStore, [
+    ...mapActions(useViewingKeyStore, [
       'createViewingKey',
       'deleteViewingKey'
     ])
   },
 
   computed: {
-    ...mapState(useViewingKeysStore, [
+    ...mapState(useViewingKeyStore, [
       'viewingKeys'
     ]),
 

@@ -9,7 +9,7 @@ const isEqual = (walletAddress, contractAddress) => {
   }
 }
 
-export const useViewingKeysStore = defineStore({
+export const useViewingKeyStore = defineStore({
   id: 'viewing-keys',
 
   enablePersist: true,

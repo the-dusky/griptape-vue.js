@@ -5,7 +5,7 @@ import { grip, GriptapeConfig } from '@stakeordie/griptape.js'
 import WalletInfo from '@/components/WalletInfo.vue'
 import ViewingKeyManager from '@/components/ViewingKeyManager.vue'
 import { useWalletStore } from '@/modules/wallet'
-import { useViewingKeysStore } from '@/modules/viewing-keys'
+import { useViewingKeyStore } from '@/modules/viewing-keys'
 import { statePersist } from '@/modules/state-persist'
 import { contractRegistry, registry } from '@/modules/contracts'
 
@@ -56,7 +56,7 @@ export function gripVueJsApp(
       // here.
       const wallet = useWalletStore(pinia)
       await wallet.init()
-      useViewingKeysStore(pinia)
+      useViewingKeyStore(pinia)
 
       // Pre mount the app for user specific components, plugins.
       preMount(app, pinia, options)

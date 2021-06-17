@@ -5,7 +5,7 @@ declare module '@/modules/wallet' {
 }
 
 declare module '@/modules/viewing-keys' {
-  export const useViewingKeysStore: Function
+  export const useViewingKeyStore: Function
 }
 
 declare module '@/modules/contracts' {
