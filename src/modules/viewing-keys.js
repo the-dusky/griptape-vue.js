@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { assert } from '@stakeordie/griptape.js'
-import { useWalletStore } from './wallet'
+import { useWalletStore } from '@/modules/wallet'
 
 const isEqual = (walletAddress, contractAddress) => {
   return vk => {

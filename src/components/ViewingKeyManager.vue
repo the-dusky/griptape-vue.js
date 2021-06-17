@@ -24,7 +24,7 @@
 
 <script>
 import { mapState, mapActions } from 'pinia'
-import { useViewingKeysStore } from '../modules/viewing-keys'
+import { useViewingKeysStore } from '@/modules/viewing-keys'
 
 export default {
   props: {

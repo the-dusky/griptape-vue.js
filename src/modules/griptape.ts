@@ -2,12 +2,12 @@ import { createApp, markRaw } from 'vue'
 import { createPinia, defineStore } from 'pinia'
 import { grip, GriptapeConfig } from '@stakeordie/griptape.js'
 
-import WalletInfo from '../components/WalletInfo.vue'
-import ViewingKeyManager from '../components/ViewingKeyManager.vue'
-import { useWalletStore } from './wallet'
-import { useViewingKeysStore } from './viewing-keys'
-import { statePersist } from '../modules/state-persist'
-import { contractRegistry, registry } from './contracts'
+import WalletInfo from '@/components/WalletInfo.vue'
+import ViewingKeyManager from '@/components/ViewingKeyManager.vue'
+import { useWalletStore } from '@/modules/wallet'
+import { useViewingKeysStore } from '@/modules/viewing-keys'
+import { statePersist } from '@/modules/state-persist'
+import { contractRegistry, registry } from '@/modules/contracts'
 
 const griptapeGlue = {
   install(app: any, options: any) {
@@ -33,9 +33,9 @@ export function gripVueJsApp(
   conf: GriptapeConfig,
   rootComponent: any,
   preMount: Function
-): Promise<void> {
+): Promise<object> {
 
-  return new Promise<void>(async (resolve, reject) => {
+  return new Promise<object>(async (resolve, reject) => {
     try {
 
       // Create and setup the application.
