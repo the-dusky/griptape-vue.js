@@ -12,14 +12,14 @@
     <!-- Main content -->
     <div class="wallet__content" v-show="isWalletReady">
       <img src="../assets/wallet.svg" alt="wallet icon">
-      <span>{{ bech32(address) }} | {{ balance }} SCRT</span>
+      <span>{{ bech32(address) }} | {{ coinConvert(balance, 6, 'human', 2) }} SCRT</span>
     </div>
 
   </div>
 </template>
 
 <script>
-import { bech32 } from '@stakeordie/griptape.js'
+import { bech32, coinConvert } from '@stakeordie/griptape.js'
 import { mapState, mapActions } from 'pinia'
 import { useWalletStore } from '@/modules/wallet'
 
@@ -29,7 +29,8 @@ export default {
   },
 
   methods: {
-    bech32
+    bech32,
+    coinConvert
   },
 
   computed: {
@@ -49,8 +50,8 @@ export default {
   --wallet-border: 1px solid black;
   --wallet-border-radius: 4px;
 
-  width: 100%;
-  max-width: var(--wallet-width);
+  width: auto;
+  padding: 0 var(--gutter);
   height: var(--wallet-height);
   border: var(--wallet-border);
   border-radius: var(--wallet-border-radius);

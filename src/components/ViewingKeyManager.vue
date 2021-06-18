@@ -3,7 +3,7 @@
 
     <div class="vk__content vk__content--has-vk" v-if="current">
       <img src="../assets/key.svg" alt="key icon">
-      <span>{{ current }}</span>
+      <span>{{ bech32(current) }}</span>
       <a href="#" @click.prevent="forget">Forget</a>
     </div>
 
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import { bech32 } from '@stakeordie/griptape.js'
 import { mapState, mapActions } from 'pinia'
 import { useViewingKeyStore } from '@/modules/viewing-keys'
 
@@ -47,22 +48,21 @@ export default {
   },
 
   methods: {
+    bech32,
+
     create() {
       this.createViewingKey(this.contractAddress)
       this.resetForm()
-      this.$emit('change', this.getViewingKey(this.contractAddress))
     },
 
     add() {
       if (!this.form.vk) return
       this.addViewingKey(this.contractAddress, this.form.vk)
       this.resetForm()
-      this.$emit('change', this.getViewingKey(this.contractAddress))
     },
 
     forget() {
       this.deleteViewingKey(this.contractAddress)
-      this.$emit('change', this.getViewingKey(this.contractAddress))
     },
 
     showForm() {
@@ -100,9 +100,9 @@ export default {
   --vk-border: 1px solid black;
   --vk-border-radius: 4px;
 
-  width: 100%;
+  width: auto;
+  padding: 0 var(--gutter);
   max-height: 100%;
-  max-width: var(--vk-width);
   height: var(--vk-height);
   border: var(--vk-border);
   border-radius: var(--vk-border-radius);
