@@ -32,7 +32,7 @@ const griptapeGlue = {
 export function gripVueJsApp(
   conf: GriptapeConfig,
   rootComponent: any,
-  preMount: Function
+  preMount?: Function
 ): Promise<object> {
 
   return new Promise<object>(async (resolve, reject) => {
@@ -59,7 +59,9 @@ export function gripVueJsApp(
       useViewingKeyStore(pinia)
 
       // Pre mount the app for user specific components, plugins.
-      preMount(app, pinia, options)
+      if (preMount) {
+        preMount(app, pinia, options)
+      }
 
       // Mount the application.
       app.mount(options.mountId)
