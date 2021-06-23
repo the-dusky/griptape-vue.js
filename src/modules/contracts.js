@@ -14,7 +14,7 @@ function createStoreFromContract(id, contracDefinition) {
     spec
   } = contracDefinition
   const store = {
-    id: `contract/${id}`,
+    id,
     state: () => ({
       contractAddress,
       spec,
@@ -44,9 +44,14 @@ export function createSnip20Contract(id, contractAddress, contractDef) {
 // Global registry for contracts.
 export const registry = {}
 
+function isContract(store) {
+  return typeof store.$state.contractAddress !== 'undefined'
+      && typeof store.$state.spec !== 'undefined'
+}
+
 // Pinia plugin for accesing all the contracts in the application by id.
 export const contractRegistry = ({ store }) => {
-  if (store.$id.includes('contract') && !registry[store.$id]) {
+  if (isContract(store) && !registry[store.$id]) {
     registry[store.$state.contractAddress] = store
   }
 }

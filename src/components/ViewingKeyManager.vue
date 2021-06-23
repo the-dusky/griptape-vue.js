@@ -101,7 +101,7 @@ export default {
   --vk-border-radius: 4px;
 
   width: auto;
-  padding: 0 var(--gutter);
+  padding: 0 var(--gt-gutter);
   max-height: 100%;
   height: var(--vk-height);
   border: var(--vk-border);
@@ -113,11 +113,11 @@ export default {
 
     display: grid;
     grid-auto-flow: column;
-    grid-column-gap: var(--gutter);
+    grid-column-gap: var(--gt-gutter);
     place-items: center center;
 
     &--has-vk {
-      padding: 0 var(--gutter-l);
+      padding: 0 var(--gt-gutter-l);
 
       img {
         justify-self: end;

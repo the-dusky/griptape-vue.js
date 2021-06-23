@@ -1,15 +1,15 @@
 @import "reset";
 
 :root {
-  --gutter: 8px;
-  --gutter-l: calc(var(--gutter) * 2);
-  --font-family: arial, serif;
-  --font-size: 14px;
+  --gt-gutter: 12px;
+  --gt-gutter-l: calc(var(--gt-gutter) * 2);
+  --gt-font-family: arial, serif;
+  --gt-font-size: 14px;
 }
 
 html {
-  font-family: var(--font-family);
-  font-size: var(--font-size);
+  font-family: var(--gt-font-family);
+  font-size: var(--gt-font-size);
 }
 
 * {
