@@ -4,7 +4,7 @@
     <!-- Enable wallet action -->
     <a href="#"
        class="wallet__content"
-       @click.prevent="enable"
+       @click="enable"
        v-show="!isWalletReady">
        Enable Keplr
     </a>
@@ -12,7 +12,12 @@
     <!-- Main content -->
     <div class="wallet__content" v-show="isWalletReady">
       <img src="../assets/wallet.svg" alt="wallet icon">
-      <span>{{ bech32(address) }} | {{ coinConvert(balance, 6, 'human', 2) }} SCRT</span>
+      <span v-if="!address | !balance">
+        No available, check wallet
+      </span>
+      <span v-else>
+        {{ bech32(address) }} | {{ theBalance }}
+      </span>
     </div>
 
   </div>
@@ -25,10 +30,8 @@ import { useWalletStore } from '@/modules/wallet'
 
 export default {
   methods: {
-    ...mapActions(useWalletStore, ['enable'])
-  },
+    ...mapActions(useWalletStore, ['enable']),
 
-  methods: {
     bech32,
     coinConvert
   },
@@ -38,7 +41,14 @@ export default {
       'address',
       'balance',
       'isWalletReady'
-    ])
+    ]),
+
+    theBalance() {
+      if (this.balance) {
+        return `${coinConvert(this.balance, 6, 'human', 2)} SCRT`
+      }
+      return 'No available'
+    }
   }
 }
 </script>
