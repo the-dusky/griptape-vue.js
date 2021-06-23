@@ -1,6 +1,10 @@
 import { createApp, markRaw } from 'vue'
 import { createPinia, defineStore } from 'pinia'
-import { grip, GriptapeConfig } from '@stakeordie/griptape.js'
+import {
+  GriptapeConfig,
+  useWallet,
+  createScrtClient
+} from '@stakeordie/griptape.js'
 
 import WalletInfo from '@/components/WalletInfo.vue'
 import ViewingKeyManager from '@/components/ViewingKeyManager.vue'
@@ -19,8 +23,8 @@ const griptapeGlue = {
 
     // Init pinia plugins
     pinia.use(({ store }: any) => {
-      store.wallet = markRaw(wallet)
-      store.scrtClient = markRaw(scrtClient)
+      store.wallet = wallet ? markRaw(wallet) : undefined
+      store.scrtClient = scrtClient ? markRaw(scrtClient) : undefined
       store.contractsRegistry = markRaw(registry)
     })
     pinia.use(statePersist)
@@ -45,17 +49,17 @@ export function gripVueJsApp(
         mountId: '#app'
       }
 
-      // Grip the application.
-      const griptape = await grip(conf)
+      // Get the wallet and scrtClient
+      const wallet = await useWallet()
+      const scrtClient = await createScrtClient(conf.restUrl, wallet)
 
       // Register the glue plugin.
-      app.use(griptapeGlue, { ...griptape, pinia })
+      app.use(griptapeGlue, { wallet, scrtClient, pinia })
 
       // Needed to initialize the app, but also there are some
       // issues if all the stores are not initialize/called
       // here.
-      const wallet = useWalletStore(pinia)
-      await wallet.init()
+      const walletStore = useWalletStore(pinia)
       useViewingKeyStore(pinia)
 
       // Pre mount the app for user specific components, plugins.
@@ -65,6 +69,9 @@ export function gripVueJsApp(
 
       // Mount the application.
       app.mount(options.mountId)
+
+      // Init the wallet store.
+      await walletStore.init()
 
       // Resolve the promise, provide the app and pinia instances.
       resolve({ app, pinia, options })

@@ -4,13 +4,19 @@ export const useWalletStore = defineStore({
   id: 'wallet',
 
   state: () => ({
-    address: '', // current wallet address
-    balance: 0, // current balance
+    address: undefined, // current wallet address
+    balance: undefined, // current balance
     isWalletReady: false // whether the wallet is completely loaded
   }),
 
   actions: {
     async init() {
+      try {
+        this.wallet.enable()
+      } catch (e) {
+        // ignore
+      }
+
       await this.updateAccount()
 
       this.wallet.onKeplrChange(() => {
@@ -20,15 +26,18 @@ export const useWalletStore = defineStore({
 
     async updateAccount() {
       const address = await this.wallet.getAddress()
-      const account = await this.scrtClient.getAccount(address)
-      const balance = account.balance[0].amount
-      this.$patch({ address, balance, isWalletReady: true })
+      const account = await this.scrtClient?.getAccount(address)
+      if (account) {
+        const balance = account.balance[0].amount
+        this.$patch({ address, balance })
+      }
+      this.isWalletReady = true
     },
 
     async enable() {
       try {
-        await wallet.enable()
-        this.updateAccount()
+        await this.wallet.enable()
+        await this.updateAccount()
       } catch (e) {
         throw e
       }
