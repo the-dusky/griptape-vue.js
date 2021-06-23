@@ -51,7 +51,7 @@ export default {
   --wallet-border-radius: 4px;
 
   width: auto;
-  padding: 0 var(--gutter);
+  padding: 0 var(--gt-gutter);
   height: var(--wallet-height);
   border: var(--wallet-border);
   border-radius: var(--wallet-border-radius);
@@ -62,7 +62,7 @@ export default {
 
     display: grid;
     grid-auto-flow: column;
-    grid-column-gap: var(--gutter);
+    grid-column-gap: var(--gt-gutter);
     place-items: center center;
 
     img {
