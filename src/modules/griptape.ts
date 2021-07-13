@@ -51,7 +51,7 @@ export function gripVueJsApp(
 
       // Get the wallet and scrtClient
       const wallet = await useWallet()
-      const scrtClient = await createScrtClient(conf.restUrl, wallet)
+      const scrtClient = await createScrtClient(conf, wallet)
 
       // Register the glue plugin.
       app.use(griptapeGlue, { wallet, scrtClient, pinia })

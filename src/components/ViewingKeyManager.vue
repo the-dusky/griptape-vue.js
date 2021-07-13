@@ -117,8 +117,6 @@ export default {
     place-items: center center;
 
     &--has-vk {
-      padding: 0 var(--gt-gutter-l);
-
       img {
         justify-self: end;
       }
