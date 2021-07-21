@@ -5,14 +5,14 @@ import {
 } from '@stakeordie/griptape.js'
 
 // Transforms a contract definition in a pinia store.
-function createStoreFromContract(id, contracDefinition) {
+function createStoreFromContract(id, contractDefinition) {
   const {
     contractAddress,
     state,
     messages,
     queries,
     spec
-  } = contracDefinition
+  } = contractDefinition
   const store = {
     id,
     state: () => ({
