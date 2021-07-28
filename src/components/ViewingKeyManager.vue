@@ -8,7 +8,8 @@
     </div>
 
     <div class="vk__content" v-else-if="!current && !isFormShowing">
-      <a href="#" @click.prevent="create">Create or get</a>
+      <img src="../assets/key.svg" alt="key icon">
+      <a href="#" @click.prevent="create">Create or get viewing key</a>
     </div>
 
     <div class="vk__content vk-form" v-else>
@@ -116,11 +117,11 @@ export default {
     grid-column-gap: var(--gt-gutter);
     place-items: center center;
 
-    &--has-vk {
-      img {
-        justify-self: end;
-      }
+    img {
+      justify-self: end;
+    }
 
+    &--has-vk {
       span {
         width: 100%;
         text-overflow: ellipsis;
