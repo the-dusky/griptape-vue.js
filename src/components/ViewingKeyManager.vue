@@ -33,7 +33,7 @@ import { useViewingKeyStore } from '@/modules/viewing-keys'
 
 export default {
   props: {
-    contractAddress: {
+    contractIdentifier: {
       type: String,
       required: true
     }
@@ -52,18 +52,18 @@ export default {
     bech32,
 
     create() {
-      this.createViewingKey(this.contractAddress)
+      this.createViewingKey(this.contractIdentifier)
       this.resetForm()
     },
 
     add() {
       if (!this.form.vk) return
-      this.addViewingKey(this.contractAddress, this.form.vk)
+      this.addViewingKey(this.contractIdentifier, this.form.vk)
       this.resetForm()
     },
 
     forget() {
-      this.deleteViewingKey(this.contractAddress)
+      this.deleteViewingKey(this.contractIdentifier)
     },
 
     showForm() {
@@ -88,7 +88,7 @@ export default {
     ]),
 
     current() {
-      return this.getViewingKey(this.contractAddress)
+      return this.getViewingKey(this.contractIdentifier)
     }
   }
 }
