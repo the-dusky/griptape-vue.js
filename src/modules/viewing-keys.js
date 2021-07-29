@@ -2,10 +2,10 @@ import { defineStore } from 'pinia'
 import { assert } from '@stakeordie/griptape.js'
 import { useWalletStore } from '@/modules/wallet'
 
-const isEqual = (walletAddress, contractAddress) => {
+const isEqual = (walletAddress, contractIdentifier) => {
   return vk => {
     return vk.walletAddress === walletAddress
-        && vk.contractAddress === contractAddress
+        && ( vk.contractAddress === contractIdentifier || vk.contractId === contractIdentifier)
   }
 }
 
@@ -20,21 +20,24 @@ export const useViewingKeyStore = defineStore({
   }),
 
   actions: {
-    async createViewingKey(contractAddress) {
+    async createViewingKey(contractIdentifier) {
       const walletStore = useWalletStore()
       const walletAddress = walletStore.address
 
       const viewingKey = this.viewingKeys
-        .find(isEqual(walletAddress, contractAddress))
-
+        .find(isEqual(walletAddress, contractIdentifier))
       // If you have already a viewing key, do nothing
       if (viewingKey) {
         return
       }
 
-      const contract = this.contractsRegistry[contractAddress]
+      const contracts = Object.keys(this.contractsRegistry).map(c => this.contractsRegistry[c])
+      const contractByAddress = this.contractsRegistry[contractIdentifier]
+      const contract = contractByAddress ? contractByAddress : contracts.find(c => c.$id === contractIdentifier)
       assert(contract, 'contract not found')
       const contractSpec = contract.$state.spec
+      const contractId = contract.$id
+      const contractAddress = contract.contractAddress
 
       if (contractSpec === 'snip-20') {
         // TODO maybe we don't want to access the wallet directly.
@@ -51,7 +54,7 @@ export const useViewingKeyStore = defineStore({
 
         // Update state
         this.$patch((state) => {
-          state.viewingKeys.push({ walletAddress, contractAddress, key })
+          state.viewingKeys.push({ walletAddress, contractAddress, key, contractId })
         })
 
       } else {
@@ -60,16 +63,16 @@ export const useViewingKeyStore = defineStore({
 
         // Update state
         this.$patch((state) => {
-          state.viewingKeys.push({ walletAddress, contractAddress, key })
+          state.viewingKeys.push({ walletAddress, contractAddress, key, contractId })
         })
       }
     },
 
-    deleteViewingKey(contractAddress) {
+    deleteViewingKey(contractIdentifier) {
       const wallet = useWalletStore()
 
       const idx = this.viewingKeys
-        .findIndex(isEqual(wallet.address, contractAddress))
+        .findIndex(isEqual(wallet.address, contractIdentifier))
 
       if (idx === -1) return
 
@@ -78,10 +81,10 @@ export const useViewingKeyStore = defineStore({
       })
     },
 
-    getViewingKey(contractAddress) {
+    getViewingKey(contractIdentifier) {
       const wallet = useWalletStore()
       const vk = this.viewingKeys
-        .find(isEqual(wallet.address, contractAddress))
+        .find(isEqual(wallet.address, contractIdentifier))
       return vk?.key
     }
   }

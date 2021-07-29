@@ -8,7 +8,8 @@
     </div>
 
     <div class="vk__content" v-else-if="!current && !isFormShowing">
-      <a href="#" @click.prevent="create">Create or get</a>
+      <img src="../assets/key.svg" alt="key icon">
+      <a href="#" @click.prevent="create">Create or get viewing key</a>
     </div>
 
     <div class="vk__content vk-form" v-else>
@@ -32,7 +33,7 @@ import { useViewingKeyStore } from '@/modules/viewing-keys'
 
 export default {
   props: {
-    contractAddress: {
+    contractIdentifier: {
       type: String,
       required: true
     }
@@ -51,18 +52,18 @@ export default {
     bech32,
 
     create() {
-      this.createViewingKey(this.contractAddress)
+      this.createViewingKey(this.contractIdentifier)
       this.resetForm()
     },
 
     add() {
       if (!this.form.vk) return
-      this.addViewingKey(this.contractAddress, this.form.vk)
+      this.addViewingKey(this.contractIdentifier, this.form.vk)
       this.resetForm()
     },
 
     forget() {
-      this.deleteViewingKey(this.contractAddress)
+      this.deleteViewingKey(this.contractIdentifier)
     },
 
     showForm() {
@@ -87,7 +88,7 @@ export default {
     ]),
 
     current() {
-      return this.getViewingKey(this.contractAddress)
+      return this.getViewingKey(this.contractIdentifier)
     }
   }
 }
@@ -116,11 +117,11 @@ export default {
     grid-column-gap: var(--gt-gutter);
     place-items: center center;
 
-    &--has-vk {
-      img {
-        justify-self: end;
-      }
+    img {
+      justify-self: end;
+    }
 
+    &--has-vk {
       span {
         width: 100%;
         text-overflow: ellipsis;
