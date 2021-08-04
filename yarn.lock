@@ -852,7 +852,7 @@ picomatch@^2.0.4, picomatch@^2.2.1:
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.3.0.tgz#f1f061de8f6a4bf022892e2d128234fb98302972"
   integrity sha512-lY1Q/PiJGC2zOv/z391WOTD+Z02bCgsFfvxoXXf6h7kv9o+WmsmzYqrAwY63sNgOxE4xEdq0WyUnXfKeBrSvYw==
 
-pinia@^2.0.0-beta.2:
+pinia@2.0.0-beta.2:
   version "2.0.0-beta.2"
   resolved "https://registry.yarnpkg.com/pinia/-/pinia-2.0.0-beta.2.tgz#2d4321166ad77950abc35036dbefead0f0c81319"
   integrity sha512-fzjzS5gaZyWNFfQBL60Bn967Jwy3nbYuVCjzpqCCbI/wzrIN/NqLRy9ACRaZvAf+T/VEv5+A0J87UkWalSJY0w==
